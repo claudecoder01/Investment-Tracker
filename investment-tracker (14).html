@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Investment Portfolio Tracker</title>
+<!-- PWA Meta -->
+<meta name="theme-color" content="#0a0e17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Invest Track">
+<meta name="application-name" content="Invest Track">
+<meta name="description" content="Personal investment portfolio tracker">
+<meta name="mobile-web-app-capable" content="yes">
+<!-- Inline manifest -->
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkludmVzdG1lbnQgUG9ydGZvbGlvIFRyYWNrZXIiLAogICJzaG9ydF9uYW1lIjogIkludmVzdCBUcmFjayIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBhMGUxNyIsCiAgInRoZW1lX2NvbG9yIjogIiMwYTBlMTciLAogICJpY29ucyI6IFt7CiAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nMTAyJyBmaWxsPSclMjMwYTBlMTcnLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2cnIHgxPScwJScgeTE9JzAnJSB4Mj0nMTAwJScgeTI9JzEwMCUnPjxzdG9wIG9mZnNldD0nMCUnIHN0b3AtY29sb3I9JyUyMzM0ZDM5OScvPjxzdG9wIG9mZnNldD0nMTAwJScgc3RvcC1jb2xvcj0nJTIzNjBhNWZhJy8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHRleHQgeD0nMjU2JyB5PSczNDAnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScyODAnIGZvbnQtd2VpZ2h0PSc3MDAnIGZpbGw9J3VybCglMjNnKScgdGV4dC1hbmNob3I9J21pZGRsZSc+wqM8L3RleHQ+PC9zdmc+IiwKICAgICJzaXplcyI6ICIyNTZ4MjU2IiwKICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogIH1dCn0=">
+<!-- Apple touch icon (inline SVG as data URI) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='102' fill='%230a0e17'/><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%2334d399'/><stop offset='100%25' stop-color='%2360a5fa'/></linearGradient></defs><text x='256' y='340' font-family='Arial' font-size='280' font-weight='700' fill='url(%23g)' text-anchor='middle'>£</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{--bg0:#0a0e17;--bg1:#111827;--bg2:#1a2236;--bg2h:#1e2a42;--bgi:#0f1629;--bd:#2a3654;--bdl:#3a4a6a;--t1:#e8ecf4;--t2:#8b95ab;--t3:#5a6580;--gn:#34d399;--gnd:rgba(52,211,153,.15);--rd:#f87171;--rdd:rgba(248,113,113,.15);--bl:#60a5fa;--bld:rgba(96,165,250,.12);--am:#fbbf24;--amd:rgba(251,191,36,.12);--pu:#a78bfa;--cy:#22d3ee;--or:#fb923c;--pk:#f472b6;--sh:0 4px 24px rgba(0,0,0,.3);--r:12px;--rs:8px}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);min-height:100vh;overflow-x:hidden}.mono{font-family:'JetBrains Mono',monospace}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.hdr{background:linear-gradient(180deg,rgba(26,34,54,.95),rgba(10,14,23,.98));border-bottom:1px solid var(--bd);padding:14px 24px;padding-top:max(14px,env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);flex-wrap:wrap;gap:8px}
+.hdr-l{display:flex;align-items:center;gap:12px}.logo{width:36px;height:36px;background:linear-gradient(135deg,var(--gn),var(--bl));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700}
+.hdr h1{font-size:17px;font-weight:700;letter-spacing:-.02em}.hdr h1 span{color:var(--gn)}.hdr-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ts{color:var(--t3);font-size:10px;font-family:'JetBrains Mono',monospace}
+.b{padding:6px 12px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bg2);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.b:hover{background:var(--bg2h);border-color:var(--bdl)}.bp{background:var(--gn);color:#0a0e17;border-color:var(--gn);font-weight:600}.bp:hover{background:#2cc88a}
+.bl_{background:linear-gradient(135deg,rgba(52,211,153,.15),rgba(96,165,250,.1));border:2px solid var(--gn);color:var(--gn);font-weight:600;font-size:13px;padding:9px 18px}.bl_:hover{background:rgba(52,211,153,.25)}
+.bl_ .pls{width:7px;height:7px;border-radius:50%;background:var(--gn);animation:pls 1.5s infinite}@keyframes pls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.be{background:var(--amd);border-color:rgba(251,191,36,.4);color:var(--am);font-weight:600;padding:9px 18px}.be:hover{background:rgba(251,191,36,.25)}
+.nav{display:flex;gap:2px;padding:8px 24px;background:var(--bg1);border-bottom:1px solid var(--bd);overflow-x:auto}
+.nt{padding:8px 16px;border-radius:var(--rs);background:0;border:0;color:var(--t2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap}.nt:hover{color:var(--t1);background:var(--bg2)}.nt.a{color:var(--gn);background:var(--gnd)}
+.mn{padding:18px 24px;max-width:1440px;margin:0 auto}
+.cd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:20px;box-shadow:var(--sh);animation:fi .3s ease;margin-bottom:18px}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:6px}.ct{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:18px}
+.sc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:16px;position:relative;overflow:hidden}.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sc.gn::before{background:var(--gn)}.sc.rd::before{background:var(--rd)}.sc.bl::before{background:var(--bl)}.sc.am::before{background:var(--am)}.sc.pu::before{background:var(--pu)}
+.sl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}.sv{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;letter-spacing:-.02em}
+.sch_{font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:3px}.pos{color:var(--gn)}.neg{color:var(--rd)}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12px}thead th{text-align:left;padding:8px;color:var(--t3);font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--bd);white-space:nowrap}
+tbody td{padding:9px 8px;border-bottom:1px solid rgba(42,54,84,.5);white-space:nowrap}tbody tr:hover{background:rgba(96,165,250,.04)}tbody tr.sold-row{opacity:.55}tfoot td{padding:8px}
+.ab{display:inline-flex;align-items:center;gap:6px;font-weight:500}.adot{width:7px;height:7px;border-radius:50%}
+.abc{display:flex;height:28px;border-radius:6px;overflow:hidden;margin-bottom:12px}.as_{height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#0a0e17;transition:all .3s;cursor:pointer;position:relative}
+.as_:hover{filter:brightness(1.15)}.as_ .tp{display:none;position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:var(--bg0);border:1px solid var(--bd);padding:4px 8px;border-radius:6px;font-size:10px;white-space:nowrap;color:var(--t1);z-index:10}.as_:hover .tp{display:block}
+.al{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}.li{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t2)}.ld_{width:9px;height:9px;border-radius:3px}
+.rt{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600}.rl{background:var(--gnd);color:var(--gn)}.rm{background:var(--amd);color:var(--am)}.rh{background:var(--rdd);color:var(--rd)}
+.st-tag{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600}
+.st-hold{background:var(--gnd);color:var(--gn)}.st-sold{background:rgba(139,149,171,.15);color:var(--t3)}
+.fg{display:flex;flex-direction:column;gap:3px}.fg label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em}
+.fg input,.fg select{padding:8px 10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bgi);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px}
+.fg input:focus,.fg select:focus{outline:0;border-color:var(--bl);box-shadow:0 0 0 3px rgba(96,165,250,.15)}.fg select option{background:var(--bg2)}
+input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer;opacity:.7;transition:opacity .2s}input[type="date"]::-webkit-calendar-picker-indicator:hover{opacity:1}
+.fr{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;align-items:end}
+.fb{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}.fc{padding:5px 10px;border-radius:18px;font-size:11px;font-weight:500;cursor:pointer;transition:all .2s;border:1px solid var(--bd);background:var(--bgi);color:var(--t2);display:flex;align-items:center;gap:4px;user-select:none}
+.fc:hover{border-color:var(--bdl);color:var(--t1)}.fc.act{border-color:var(--gn);color:var(--gn);background:var(--gnd)}.fc .dot{width:6px;height:6px;border-radius:50%}
+.yp{display:flex;gap:3px;flex-wrap:wrap}.ypl{padding:4px 10px;border-radius:14px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--bgi);color:var(--t2);transition:all .2s}.ypl:hover{border-color:var(--bdl);color:var(--t1)}.ypl.act{border-color:var(--bl);color:var(--bl);background:var(--bld)}
+.sr{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(42,54,84,.4)}.sm_{width:60px;font-size:11px;color:var(--t3);flex-shrink:0}.sbb{flex:1;height:20px;background:var(--bgi);border-radius:4px;overflow:hidden}
+.sbf{height:100%;border-radius:4px;transition:width .5s;display:flex;align-items:center;padding-left:6px;font-size:9px;font-weight:600;color:#0a0e17}.svl{width:65px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;flex-shrink:0}
+.mo{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.mo.act{opacity:1;pointer-events:all}.ml{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:24px;width:92%;max-width:540px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.ml h2{font-size:16px;margin-bottom:14px}.ml .fg{margin-bottom:8px}.ma{display:flex;gap:6px;justify-content:flex-end;margin-top:14px}
+.db{background:none;border:none;color:var(--t3);cursor:pointer;padding:2px 5px;border-radius:4px;transition:all .2s;font-size:12px}.db:hover{color:var(--rd);background:var(--rdd)}
+.eb{background:none;border:none;color:var(--t3);cursor:pointer;padding:2px 5px;border-radius:4px;transition:all .2s;font-size:12px}.eb:hover{color:var(--bl);background:var(--bld)}
+.sb{background:none;border:none;color:var(--t3);cursor:pointer;padding:2px 5px;border-radius:4px;transition:all .2s;font-size:11px}.sb:hover{color:var(--am);background:var(--amd)}
+.pb{background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(96,165,250,.06));border:1px solid rgba(52,211,153,.2);border-radius:var(--r);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.pb .pt{font-size:12px;color:var(--t2);display:flex;align-items:center;gap:6px}.pb .pbs{display:flex;gap:6px;flex-wrap:wrap}
+.ls{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600;margin-left:6px}.ls.ok{background:var(--gnd);color:var(--gn)}.ls.er{background:var(--rdd);color:var(--rd)}.ls.ld{background:var(--bld);color:var(--bl)}
+.cur-toggle{display:flex;border:1px solid var(--bd);border-radius:var(--rs);overflow:hidden}
+.cur-opt{padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;background:var(--bgi);color:var(--t3);transition:all .2s;border:none;font-family:'DM Sans',sans-serif}.cur-opt:hover{color:var(--t1)}.cur-opt.act{background:var(--bl);color:#fff}
+.eg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.live-pnl{display:inline-flex;align-items:center;gap:3px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--gn);animation:pls 2s infinite}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){.hdr{padding:10px 12px}.mn{padding:12px}.nav{padding:6px 12px}.sg{grid-template-columns:1fr 1fr}.fr{grid-template-columns:1fr}.eg{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-l"><div class="logo">£</div><h1>Investment <span>Tracker</span></h1></div>
+  <div class="hdr-r">
+    <span class="ts" id="tsEl" style="">--</span>
+    <span id="gSyncSt"></span>
+    <button class="b" id="gSignBtn" onclick="gDriveAuth()" style="display:none">☁️ Sign in to Drive</button>
+    <button class="b" id="gSaveBtn" onclick="gDriveSave()" style="display:none;background:rgba(66,133,244,.15);border-color:rgba(66,133,244,.4);color:#4285f4">☁️ Save to Drive</button>
+    <button class="b" id="gLoadBtn" onclick="gDriveLoad()" style="display:none;background:rgba(66,133,244,.08);border-color:rgba(66,133,244,.3);color:#4285f4">☁️ Load</button>
+    <button class="b" onclick="exportD()">↓ JSON</button>
+    <button class="b" onclick="downloadHTML()">📄 HTML</button>
+    <button class="b" onclick="$('impF').click()">↑ Import</button>
+    <input type="file" id="impF" accept=".json" style="display:none" onchange="importD(event)">
+    <button class="bp b" onclick="save()">💾 Save</button>
+  </div>
+</div>
+<div class="nav" id="nv"><button class="nt a" onclick="st('overview')">Overview</button><button class="nt" onclick="st('vuag')">VUAG</button><button class="nt" onclick="st('btc')">Bitcoin</button><button class="nt" onclick="st('us')">US Stocks</button><button class="nt" onclick="st('india')">India</button><button class="nt" onclick="st('gold')">Gold</button><button class="nt" onclick="st('cashisa')">Cash ISA</button><button class="nt" onclick="st('savings')">Savings</button><button class="nt" onclick="st('logbook')">📒 Logbook</button><button class="nt" onclick="st('whatif')">🧪 What If</button><button class="nt" onclick="st('plans')">📋 Plans</button></div>
+<div class="mn" id="mc"><div class="pb"><div class="pt"><span style="font-size:16px">📊</span> Portfolio <span class="ls" style="background:var(--bgi);color:var(--t3)">£1=₹126</span></div>
+<div class="pbs"><div class="cur-toggle"><button class="cur-opt act" onclick="toggleCur('GBP')">£ GBP</button><button class="cur-opt" onclick="toggleCur('INR')">₹ INR</button></div><button class="bl_ b" onclick="fetchLive()"><span class="pls"></span> Fetch Live</button><button class="be b" onclick="openPr()">✏️ Manual</button></div></div><div style="margin-top:6px;font-size:10px;color:var(--t3)">FX: £1=₹125.9 · USD: £1=$1.33 · BTC: £50,054 · VUAG fail · UNH: $259.02 · HPE: $23.94 · NVO: $36.04 · TTWO: $189.69</div>
+<div class="sg">
+<div class="sc bl"><div class="sl">Invested (active)</div><div class="sv mono">£5,683.79</div></div>
+<div class="sc rd"><div class="sl">Live Value</div><div class="sv mono">£5,108.39</div><div class="sch_ neg"><span class="live-pnl"><span class="live-dot"></span>−£575.40 (-10.12%)</span></div></div>
+<div class="sc am"><div class="sl">Lloyds</div><div class="sv mono">£1,374.96</div></div>
+<div class="sc pu"><div class="sl">Net Worth</div><div class="sv mono">£6,483.35</div></div></div>
+<div class="cd"><div class="ch"><div class="ct">Filter</div><span style="font-size:11px;color:var(--bl)">2/8</span></div><div class="fb"><div class="fc act" onclick="tf('VUAG')"><span class="dot" style="background:#60a5fa"></span>Vanguard (VUAG)</div><div class="fc act" onclick="tf('BTC')"><span class="dot" style="background:#fb923c"></span>Bitcoin</div><div class="fc" onclick="tf('US')"><span class="dot" style="background:#a78bfa"></span>US Stocks</div><div class="fc" onclick="tf('INDIA')"><span class="dot" style="background:#fbbf24"></span>India (HDFC)</div><div class="fc" onclick="tf('GOLD')"><span class="dot" style="background:#facc15"></span>Gold</div><div class="fc" onclick="tf('CASHISA')"><span class="dot" style="background:#34d399"></span>Cash ISA</div><div class="fc" onclick="tf('ANGEL_ONE')"><span class="dot" style="background:#f472b6"></span>Angel One</div><div class="fc" onclick="tf('CRYPTO_PI')"><span class="dot" style="background:#22d3ee"></span>Crypto Pi</div><div class="fc" onclick="D.overviewFilter=null;rend()" style="border-color:var(--bl);color:var(--bl)">✕ All</div></div></div>
+<div class="cd"><div class="ct" style="margin-bottom:10px">Allocation</div><div class="abc"><div class="as_" style="width:78.2406758938815%;background:#60a5fa"><span class="tp">Vanguard (VUAG): £3,996.84 (78.2%)</span>78%</div><div class="as_" style="width:21.759324106118495%;background:#fb923c"><span class="tp">Bitcoin: £1,111.55 (21.8%)</span>22%</div></div><div class="al"><div class="li"><div class="ld_" style="background:#60a5fa"></div>Vanguard (VUAG) £3,996.84</div><div class="li"><div class="ld_" style="background:#fb923c"></div>Bitcoin £1,111.55</div></div></div>
+<div class="cd"><div class="ch"><div class="ct">Filtered Holdings (Active)</div><button class="bp b" onclick="om()">+ Add</button></div>
+<div class="tw"><table><thead><tr><th>Asset</th><th>Invested</th><th>Live Value</th><th>Live P&amp;L</th><th>%</th><th>Alloc</th><th>Risk</th></tr></thead><tbody><tr><td><div class="ab"><div class="adot" style="background:#60a5fa"></div>Vanguard (VUAG)</div></td><td class="mono">£3,955.78</td><td class="mono">£3,996.84</td><td class="mono pos"><span class="live-pnl"><span class="live-dot"></span>+£41.06</span></td><td class="mono pos">+1.04%</td><td>78.2%</td><td><span class="rt rm">Medium</span></td></tr><tr><td><div class="ab"><div class="adot" style="background:#fb923c"></div>Bitcoin</div></td><td class="mono">£1,728.01</td><td class="mono">£1,111.55</td><td class="mono neg"><span class="live-pnl"><span class="live-dot"></span>−£616.46</span></td><td class="mono neg">-35.67%</td><td>21.8%</td><td><span class="rt rh">High</span></td></tr></tbody>
+<tfoot><tr style="font-weight:700;border-top:2px solid var(--bd)"><td>Total</td><td class="mono">£5,683.79</td><td class="mono">£5,108.39</td><td class="mono neg">−£575.40</td><td class="mono neg">-10.12%</td><td>100%</td><td></td></tr></tfoot></table></div></div></div>
+
+<!-- TX Modal -->
+<div class="mo" id="txM"><div class="ml"><h2 id="txMH">Edit Transaction</h2>
+<div class="fg"><label>Asset</label><select id="txA"><option value="VUAG">VUAG</option><option value="BTC">Bitcoin</option><option value="US">US Stocks</option><option value="INDIA">India (HDFC)</option><option value="GOLD">Gold</option><option value="CASHISA">Cash ISA</option><option value="CRYPTO_PI">Crypto Pi</option><option value="ANGEL_ONE">Angel One</option></select></div>
+<div class="fg"><label>Type</label><select id="txT"><option value="BUY">Buy</option><option value="SELL">Sell</option></select></div>
+<div class="fr"><div class="fg"><label>Date</label><input type="date" id="txD"></div><div class="fg"><label>Price/unit</label><input type="number" step="any" id="txP"></div><div class="fg"><label>Quantity</label><input type="number" step="any" id="txQ"></div></div>
+<div class="fg"><label>Stock Name (US only)</label><input type="text" id="txS" placeholder="e.g. META" list="stockList" oninput="onStockInput()"></div>
+<datalist id="stockList"></datalist>
+<div class="fr"><div class="fg"><label>Ticker (auto-detected)</label><div style="display:flex;gap:4px"><input type="text" id="txTk" placeholder="e.g. META" style="flex:1;padding:8px 10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bgi);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px"><button class="b" style="padding:6px 10px;font-size:11px" onclick="fetchStockPrice()">📡 Fetch</button></div></div><div class="fg"><label>Live Price</label><div id="txLiveP" style="padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t3)">—</div></div></div>
+<div class="fr"><div class="fg"><label>USD→GBP Rate</label><input type="number" step="any" id="txR" placeholder="e.g. 0.78"></div><div class="fg"><label>Invested in £ (override)</label><input type="number" step="any" id="txG" placeholder="auto from rate"></div></div>
+<div class="fr"><div class="fg"><label>Fee / Commission</label><input type="number" step="any" id="txF" placeholder="0.00"></div><div class="fg"><label>Notes</label><input type="text" id="txN"></div></div>
+<input type="hidden" id="txEI" value="1"><input type="hidden" id="txEK" value="US">
+<div class="ma"><button class="b" onclick="cm('txM')">Cancel</button><button class="bp b" id="txBtn" onclick="saveTx()">Save</button></div>
+</div></div>
+
+<!-- Sell Modal -->
+<div class="mo" id="slM"><div class="ml"><h2>Mark as Sold</h2>
+<div class="fr"><div class="fg"><label>Sell Date</label><input type="date" id="slD"></div><div class="fg"><label>Sell Price (per unit)</label><input type="number" step="any" id="slP"></div><div class="fg"><label>Sell Fee</label><input type="number" step="any" id="slF" placeholder="0.00"></div></div>
+<div class="fg"><label>Notes</label><input type="text" id="slN" placeholder="e.g. Took profit"></div>
+<input type="hidden" id="slK" value=""><input type="hidden" id="slI" value="">
+<div class="ma"><button class="b" onclick="cm('slM')">Cancel</button><button class="b" style="background:var(--amd);color:var(--am);border-color:rgba(251,191,36,.4)" onclick="confirmSell()">Confirm Sell</button></div>
+</div></div>
+
+<!-- Price Modal -->
+<div class="mo" id="prM"><div class="ml"><h2>✏️ Edit Prices</h2>
+<p style="font-size:11px;color:var(--t3);margin-bottom:12px">Override prices. Persists until next live fetch.</p>
+<div id="prF"><div class="fg"><label>VUAG (£)</label><input type="number" step="any" id="p_VUAG" value="92.98"></div><div class="fg"><label>BTC (£)</label><input type="number" step="any" id="p_BTC" value="50054"></div><div class="fg"><label>Gold (£)</label><input type="number" step="any" id="p_GOLD" value="62.03"></div><div class="fg"><label>India (£)</label><input type="number" step="any" id="p_INDIA" value="1635.13"></div><div class="fg"><label>Cash ISA (£)</label><input type="number" step="any" id="p_CASHISA" value="3136.36"></div><div class="fg"><label>Angel One (£)</label><input type="number" step="any" id="p_ANGEL" value="327.58"></div><div class="fg"><label>Crypto Pi (£)</label><input type="number" step="any" id="p_PI" value="608"></div><p style="font-size:10px;color:var(--t3);margin:8px 0 4px;text-transform:uppercase">US Stocks</p><div class="fg"><label>UnitedHealth ($)</label><input type="number" step="any" id="usp_UnitedHealth" value="259.02"></div><div class="fg"><label>Hewlett Packard ($)</label><input type="number" step="any" id="usp_Hewlett_Packard" value="23.94"></div><div class="fg"><label>Novo Nordisk ($)</label><input type="number" step="any" id="usp_Novo_Nordisk" value="36.04"></div><div class="fg"><label>Take-Two ($)</label><input type="number" step="any" id="usp_Take-Two" value="189.69"></div><div class="fg"><label>META Platforms ($)</label><input type="number" step="any" id="usp_META_Platforms" value="580.2"></div><div class="fg"><label>Meta Platforms ($)</label><input type="number" step="any" id="usp_Meta_Platforms" value="674.77"></div><div class="fg" style="margin-top:8px"><label>GBP→INR Rate</label><input type="number" step="any" id="p_FX" value="125.909848"></div></div>
+<div class="fg" style="margin-top:6px"><label>Lloyds Balance (£)</label><input type="number" step="any" id="prL"></div>
+<div class="ma"><button class="b" onclick="cm('prM')">Cancel</button><button class="bp b" onclick="savePr()">💰 Update</button></div>
+</div></div>
+
+<!-- Savings Modal -->
+<div class="mo" id="svM"><div class="ml"><h2 id="svMH">Add Month</h2>
+<div class="fr"><div class="fg"><label>Month (e.g. Nov 25)</label><input type="text" id="svMo"></div><div class="fg"><label>Salary (£)</label><input type="number" step="any" id="svSal"></div></div>
+<div class="fr" style="margin-top:6px"><div class="fg"><label>Rent (£)</label><input type="number" step="any" id="svRent"></div><div class="fg"><label>Food/Other (£)</label><input type="number" step="any" id="svFood"></div><div class="fg"><label>Other Exp (£)</label><input type="number" step="any" id="svOth"></div></div>
+<p style="font-size:10px;color:var(--t3);margin-top:6px">Savings = Salary − Expenses. Rate auto-calculated.</p>
+<input type="hidden" id="svEI" value="-1">
+<div class="ma"><button class="b" onclick="cm('svM')">Cancel</button><button class="bp b" id="svBtn" onclick="saveSv()">Add</button></div>
+</div></div>
+
+<!-- Plans Modal -->
+<div class="mo" id="plM"><div class="ml"><h2 id="plMH">Add Plan</h2>
+<div class="fr"><div class="fg"><label>Month</label><select id="plMo"><option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option><option value="Apr" selected="">April</option><option value="May">May</option><option value="Jun">June</option><option value="Jul">July</option><option value="Aug">August</option><option value="Sep">September</option><option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option></select></div>
+<div class="fg"><label>Year</label><select id="plYr"><option value="2025">2025</option><option value="2026" selected="">2026</option><option value="2027">2027</option><option value="2028">2028</option></select></div></div>
+<div class="fg"><label>Asset (optional)</label><select id="plAs"><option value="">— General —</option><option value="VUAG">VUAG</option><option value="BTC">Bitcoin</option><option value="US">US Stocks</option><option value="INDIA">India (HDFC)</option><option value="GOLD">Gold</option><option value="CASHISA">Cash ISA</option></select></div>
+<div class="fg"><label>Action</label><select id="plAc"><option value="BUY">Buy</option><option value="SELL">Sell</option><option value="HOLD">Hold / Wait</option><option value="RESEARCH">Research</option><option value="OTHER">Other</option></select></div>
+<div class="fg"><label>Amount (£, optional)</label><input type="number" step="any" id="plAmt" placeholder="e.g. 300"></div>
+<div class="fg"><label>Note / Plan details</label><textarea id="plNote" rows="3" placeholder="e.g. Buy £300 BTC if price dips below £60k..." style="padding:8px 10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bgi);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px;resize:vertical"></textarea></div>
+<div class="fg"><label>Priority</label><select id="plPri"><option value="high">🔴 High</option><option value="med" selected="">🟡 Medium</option><option value="low">🟢 Low</option></select></div>
+<input type="hidden" id="plEI" value="-1">
+<div class="ma"><button class="b" onclick="cm('plM')">Cancel</button><button class="bp b" id="plBtn" onclick="savePlan()">Add</button></div>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+/* ===================== DATA ===================== */
+const DEF={lastUpdated:"2025-10-17T12:00:00",
+currentPrices:{VUAG:96.41,BTC:84688.63,GOLD:62.03,INDIA:1635.13,CASHISA:3085,ANGEL:327.58,PI:608},
+usStockPrices:{UnitedHealth:351.79,"Hewlett Packard":22.87,"Novo Nordisk":55.74,"Take-Two":262.29},
+holdings:{
+VUAG:[{d:"2025-03-24",p:84.14,q:5.942475,n:"",sold:false},{d:"2025-04-07",p:71.29,q:1.072238,n:"",sold:false},{d:"2025-04-08",p:76.78,q:1.010157,n:"",sold:false},{d:"2025-05-13",p:84.23,q:2.374449,n:"",sold:false},{d:"2025-09-12",p:93.14,q:9,n:"",sold:false},{d:"2025-10-15",p:95.98,q:3.125651,n:"",sold:false},{d:"2025-10-17",p:93.89,q:2.130152,n:"",sold:false},{d:"2025-10-20",p:96.23,q:3.566455,n:"",sold:false}],
+BTC:[{d:"2025-03-03",p:68600.27,q:.007182,n:"",sold:false},{d:"2025-10-12",p:84380.74,q:.00115,n:"",sold:false},{d:"2025-10-17",p:79427.99,q:.00248,n:"",sold:false},{d:"2025-10-20",p:82873.07,q:.001191,n:"",sold:false},{d:"2025-10-20",p:82756.53,q:.005971,n:"",sold:false},{d:"2025-10-27",p:86580.09,q:.000878,n:"",sold:false},{d:"2025-10-30",p:81582.34,q:.000909,n:"",sold:false},{d:"2025-11-03",p:81791.67,q:.000929,n:"",sold:false},{d:"2025-12-01",p:65701.56,q:.001518,n:"",sold:false}],
+US:[{d:"2025-09-18",p:343.3,q:.131685,s:"UnitedHealth",g:33.18,n:"",sold:false},{d:"2025-09-18",p:25.05,q:1.803749,s:"Hewlett Packard",g:33.16,n:"",sold:false},{d:"2025-09-18",p:61.6,q:.7335,s:"Novo Nordisk",g:33.16,n:"",sold:false},{d:"2025-10-08",p:261.5,q:.512507,s:"Take-Two",g:99.84,n:"",sold:false}],
+GOLD:[{d:"2025-10-20",p:62.86,q:1.364938,n:"",sold:false}],
+INDIA:[{d:"2024-01-01",p:0,q:0,g:1347.98,n:"HDFC",sold:false}],CASHISA:[{d:"2025-01-01",p:0,q:0,g:3000,n:"Cash ISA",sold:false}],ANGEL_ONE:[{d:"2024-01-01",p:0,q:0,g:329.68,n:"Angel One",sold:false}],CRYPTO_PI:[{d:"2024-01-01",p:0,q:0,g:1774.52,n:"Crypto Pi",sold:true,sellPrice:0,sellDate:"2025-01-01",sellNote:"Sold"}]},
+savings:[
+{month:"Oct 24",salary:2548,rent:600,food:400,other:383.07,amount:1164.93,pct:.457},
+{month:"Nov 24",salary:2548,rent:600,food:400,other:152.58,amount:1395.42,pct:.548},
+{month:"Dec 24",salary:2548,rent:600,food:400,other:547.5,amount:1000.5,pct:.393},
+{month:"Jan 25",salary:2548,rent:600,food:400,other:296.47,amount:1251.53,pct:.491},
+{month:"Feb 25",salary:2548,rent:600,food:400,other:285.08,amount:1262.92,pct:.496},
+{month:"Mar 25",salary:2548,rent:600,food:400,other:358.64,amount:1189.36,pct:.467},
+{month:"Apr 25",salary:2548,rent:600,food:400,other:461.43,amount:1086.57,pct:.426},
+{month:"May 25",salary:2548,rent:600,food:400,other:754.2,amount:793.8,pct:.311},
+{month:"Jun 25",salary:2548,rent:600,food:400,other:846.03,amount:701.97,pct:.275},
+{month:"Jul 25",salary:2548,rent:600,food:400,other:271.3,amount:1276.7,pct:.501},
+{month:"Aug 25",salary:2548,rent:600,food:400,other:155.26,amount:1392.74,pct:.547},
+{month:"Sep 25",salary:2548,rent:600,food:400,other:772.29,amount:775.71,pct:.304},
+{month:"Oct 25",salary:2548,rent:600,food:400,other:-655.91,amount:2203.91,pct:.865}],
+logbook:[],plans:[],lloydsBalance:3945,overviewFilter:null,savingsYearFilter:null,fxRate:110.5,viewCurrency:'GBP'};
+
+let D={},tab='overview',liveSt='';
+const TABS=[{id:'overview',l:'Overview'},{id:'vuag',l:'VUAG'},{id:'btc',l:'Bitcoin'},{id:'us',l:'US Stocks'},{id:'india',l:'India'},{id:'gold',l:'Gold'},{id:'cashisa',l:'Cash ISA'},{id:'savings',l:'Savings'},{id:'logbook',l:'📒 Logbook'},{id:'whatif',l:'🧪 What If'},{id:'plans',l:'📋 Plans'}];
+const AC={VUAG:'#60a5fa',BTC:'#fb923c',US:'#a78bfa',INDIA:'#fbbf24',GOLD:'#facc15',CASHISA:'#34d399',ANGEL_ONE:'#f472b6',CRYPTO_PI:'#22d3ee'};
+const AN={VUAG:'Vanguard (VUAG)',BTC:'Bitcoin',US:'US Stocks',INDIA:'India (HDFC)',GOLD:'Gold',CASHISA:'Cash ISA',ANGEL_ONE:'Angel One',CRYPTO_PI:'Crypto Pi'};
+const RM={VUAG:'Medium',BTC:'High',US:'Medium',INDIA:'Medium',GOLD:'Low',CASHISA:'Low',ANGEL_ONE:'High',CRYPTO_PI:'High'};
+const PL={VUAG:'VUAG (£)',BTC:'BTC (£)',GOLD:'Gold (£)',INDIA:'India (£)',CASHISA:'Cash ISA (£)',ANGEL:'Angel One (£)',PI:'Crypto Pi (£)'};
+const ALL=['VUAG','BTC','US','INDIA','GOLD','CASHISA','ANGEL_ONE','CRYPTO_PI'];
+const MONTH_ORDER_G=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const UST={UnitedHealth:'UNH',"Hewlett Packard":'HPE',"Novo Nordisk":'NVO',"Take-Two":'TTWO'};
+
+/* ===================== PERSISTENCE ===================== */
+function load(){const s=localStorage.getItem('investmentTracker');if(s){try{D=JSON.parse(s);for(let k of Object.keys(DEF))if(!(k in D))D[k]=JSON.parse(JSON.stringify(DEF[k]));ALL.forEach(a=>{if(!D.holdings[a])D.holdings[a]=[];D.holdings[a].forEach(h=>{if(!('sold' in h))h.sold=false;if(!('f' in h))h.f=0;if(!('sf' in h))h.sf=0})});if(!D.fxRate)D.fxRate=110.5;if(!D.viewCurrency)D.viewCurrency='GBP';if(!D.plans)D.plans=[];if(!D._tickers)D._tickers={};if(!D._usMergeView)D._usMergeView={};if(!D._qtyOverride)D._qtyOverride={};if(!D._qtyOverrideNote)D._qtyOverrideNote={};
+D.savings.forEach(s=>{if(!('salary' in s)){s.salary=2548;s.rent=600;s.food=400;s.other=s.salary-s.rent-s.food-s.amount}});
+}catch{D=JSON.parse(JSON.stringify(DEF))}}else D=JSON.parse(JSON.stringify(DEF))}
+
+function save(){D.lastUpdated=new Date().toISOString();localStorage.setItem('investmentTracker',JSON.stringify(D));const e=$('tsEl');e.textContent='✓ Saved';e.style.color='var(--gn)';setTimeout(()=>{e.style.color='';upTS()},1500);rend()}
+function upTS(){const d=new Date(D.lastUpdated);const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];$('tsEl').textContent=d.getDate()+'-'+months[d.getMonth()]+'-'+d.getFullYear()+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})}
+function exportD(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`investment-${new Date().toISOString().slice(0,10)}.json`;a.click()}
+function downloadHTML(){const html=document.documentElement.outerHTML;const b=new Blob(['<!DOCTYPE html>\n'+html],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='investment-tracker.html';a.click()}
+function importD(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{D=JSON.parse(ev.target.result);save()}catch{alert('Invalid JSON')}};r.readAsText(f);e.target.value=''}
+
+/* ===================== LIVE PRICES ===================== */
+async function fetchLive(){
+  liveSt='loading';rend();let ok=0,fail=0,log=[];
+  try{const r=await fetch('https://open.er-api.com/v6/latest/GBP');const j=await r.json();if(j.rates?.INR){D.fxRate=j.rates.INR;log.push('FX: £1=₹'+j.rates.INR.toFixed(1));ok++}
+  if(j.rates?.USD){D._usdGbp=1/j.rates.USD;log.push('USD: £1=$'+(1/D._usdGbp).toFixed(2))}
+  }catch{fail++;log.push('FX fail')}
+
+  try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=gbp');const j=await r.json();
+  if(j.bitcoin?.gbp){D.currentPrices.BTC=j.bitcoin.gbp;log.push('BTC: £'+j.bitcoin.gbp.toLocaleString());ok++}
+  }catch{fail++;log.push('BTC fail')}
+
+  try{const url='https://query1.finance.yahoo.com/v8/finance/chart/VUAG.L?interval=1d&range=1d';
+  const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(url));const j=await r.json();
+  let p=j?.chart?.result?.[0]?.meta?.regularMarketPrice;
+  if(p){if(p>500)p/=100;D.currentPrices.VUAG=p;log.push('VUAG: £'+p.toFixed(2));ok++}
+  }catch{fail++;log.push('VUAG fail')}
+
+  // Merge saved tickers with hardcoded ones
+  const allTickers={...UST,...(D._tickers||{})};
+  for(const[name,ticker]of Object.entries(allTickers)){
+    try{const url=`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`;
+    const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(url));const j=await r.json();
+    const p=j?.chart?.result?.[0]?.meta?.regularMarketPrice;
+    if(p){D.usStockPrices[name]=p;log.push(ticker+': $'+p.toFixed(2));ok++}
+    }catch{fail++;log.push(ticker+' fail')}
+  }
+
+  liveSt=ok>0?(fail>0?'partial':'ok'):'err';
+  D._liveLog=log;D.lastUpdated=new Date().toISOString();
+  localStorage.setItem('investmentTracker',JSON.stringify(D));rend();
+  setTimeout(()=>{liveSt='';rend()},8000);
+}
+
+function lsTag(){
+  if(liveSt==='loading')return'<span class="ls ld">⟳ Fetching...</span>';
+  if(liveSt==='ok')return'<span class="ls ok">✓ Updated</span>';
+  if(liveSt==='partial')return'<span class="ls ok">✓ Partial</span>';
+  if(liveSt==='err')return'<span class="ls er">⚠ Failed</span>';
+  return D.fxRate?`<span class="ls" style="background:var(--bgi);color:var(--t3)">£1=₹${D.fxRate.toFixed(0)}</span>`:''}
+
+/* ===================== CURRENCY ===================== */
+function toggleCur(c){D.viewCurrency=c;rend()}
+function isINR(){return D.viewCurrency==='INR'}
+function fxSym(){return isINR()?'₹':'£'}
+function fm(n){const sym=fxSym(),v=isINR()?n*D.fxRate:n;return(n<0?'−':'')+sym+Math.abs(v).toLocaleString(isINR()?'en-IN':'en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmG(n){return(n<0?'−':'')+'£'+Math.abs(n).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmR(n){return(n<0?'−':'')+'₹'+Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmU(n){return(n<0?'−':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fd(s){if(!s)return'—';const d=new Date(s);if(isNaN(d))return s;const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return d.getUTCDate()+'-'+months[d.getUTCMonth()]+'-'+d.getUTCFullYear()}
+function fp(n){return(n>=0?'+':'')+(n*100).toFixed(2)+'%'}
+function fpnl(n){return(n>=0?'+':'')+fm(n)}
+function cl(n){return n>=0?'pos':'neg'}
+function curTgl(){return`<div class="cur-toggle"><button class="cur-opt${!isINR()?' act':''}" onclick="toggleCur('GBP')">£ GBP</button><button class="cur-opt${isINR()?' act':''}" onclick="toggleCur('INR')">₹ INR</button></div>`}
+
+/* ===================== CALCS (respects sold status) ===================== */
+function getCP(k){return k==='VUAG'?D.currentPrices.VUAG:k==='BTC'?D.currentPrices.BTC:k==='GOLD'?D.currentPrices.GOLD:0}
+function liveUsdGbp(){return D._usdGbp||0.77}
+
+function calcTxPnl(h,key){
+  const buyFee=h.f||0, sellFee=h.sf||0;
+  if(h.sold){
+    const sp=h.sellPrice||0;
+    if(['VUAG','BTC','GOLD'].includes(key)){const inv=h.p*h.q+buyFee,val=sp*h.q-sellFee;return{inv,val,pnl:val-inv,pp:inv>0?(val-inv)/inv:0,grossInv:h.p*h.q,fee:buyFee,sfee:sellFee}}
+    if(key==='US'){const inv=(h.g||0)+buyFee,val=sp*h.q*liveUsdGbp()-sellFee;return{inv,val,pnl:val-inv,pp:inv>0?(val-inv)/inv:0,grossInv:h.g||0,fee:buyFee,sfee:sellFee}}
+    return{inv:(h.g||0)+buyFee,val:(h.g||0)-sellFee,pnl:-buyFee-sellFee,pp:0,grossInv:h.g||0,fee:buyFee,sfee:sellFee}
+  }
+  if(['VUAG','BTC','GOLD'].includes(key)){const cp=getCP(key),inv=h.p*h.q+buyFee,val=h.q*cp;return{inv,val,pnl:val-inv,pp:inv>0?(val-inv)/inv:0,grossInv:h.p*h.q,fee:buyFee,sfee:0}}
+  if(key==='US'){const cp=D.usStockPrices[h.s]||h.p;const inv=(h.g||0)+buyFee,val=cp*h.q*liveUsdGbp();return{inv,val,pnl:val-inv,pp:inv>0?(val-inv)/inv:0,grossInv:h.g||0,fee:buyFee,sfee:0}}
+  return{inv:(h.g||0)+buyFee,val:h.g||0,pnl:-buyFee,pp:0,grossInv:h.g||0,fee:buyFee,sfee:0}
+}
+
+function ca(k){
+  const hs=D.holdings[k]||[];
+  let inv=0,qty=0,val=0,rinv=0,rval=0,tfee=0;
+  if(['VUAG','BTC','GOLD'].includes(k)){
+    const cp=getCP(k);
+    hs.forEach(h=>{
+      const bf=h.f||0,sf_=h.sf||0;
+      if(h.sold){rinv+=h.p*h.q+bf;rval+=(h.sellPrice||0)*h.q-sf_}
+      else{inv+=h.p*h.q+bf;qty+=h.q}
+      tfee+=bf+sf_;
+    });
+    // Apply qty override if set
+    const oq=D._qtyOverride?.[k];
+    const actualQty=(oq!==undefined&&oq!==null&&oq!=='')?oq:qty;
+    val=actualQty*cp;
+    const calcQty=qty; // keep calculated for reference
+    qty=actualQty;
+    return{ti:inv,tq:qty,calcQty,cv:val,pnl:val-inv,pp:inv>0?(val-inv)/inv:0,rinv,rval,rpnl:rval-rinv,rpp:rinv>0?(rval-rinv)/rinv:0,tfee};
+  }else if(k==='US'){
+    hs.forEach(h=>{
+      const bf=h.f||0,sf_=h.sf||0;
+      if(h.sold){rinv+=(h.g||0)+bf;rval+=(h.sellPrice||0)*h.q*liveUsdGbp()-sf_}
+      else{inv+=(h.g||0)+bf;val+=(D.usStockPrices[h.s]||h.p)*h.q*liveUsdGbp()}
+      tfee+=bf+sf_;
+    });
+  }else if(k==='INDIA'){inv=hs.filter(h=>!h.sold).reduce((s,r)=>s+(r.g||0)+(r.f||0),0);val=D.currentPrices.INDIA}
+  else if(k==='CASHISA'){inv=hs.filter(h=>!h.sold).reduce((s,r)=>s+(r.g||0)+(r.f||0),0);val=D.currentPrices.CASHISA}
+  else if(k==='ANGEL_ONE'){inv=hs.filter(h=>!h.sold).reduce((s,r)=>s+(r.g||0)+(r.f||0),0);val=D.currentPrices.ANGEL}
+  else if(k==='CRYPTO_PI'){inv=hs.filter(h=>!h.sold).reduce((s,r)=>s+(r.g||0)+(r.f||0),0);val=D.currentPrices.PI}
+  const pnl=val-inv,rpnl=rval-rinv;
+  return{ti:inv,tq:qty,calcQty:qty,cv:val,pnl,pp:inv>0?pnl/inv:0,rinv,rval,rpnl,rpp:rinv>0?rpnl/rinv:0,tfee}}
+
+function cpf(fk){const keys=fk||ALL;let ti=0,tv=0;const bd={};keys.forEach(a=>{const c=ca(a);bd[a]=c;ti+=c.ti;tv+=c.cv});return{ti,tv,pnl:tv-ti,pp:ti>0?(tv-ti)/ti:0,bd}}
+
+/* ===================== NAV ===================== */
+function bn(){$('nv').innerHTML=TABS.map(t=>`<button class="nt${tab===t.id?' a':''}" onclick="st('${t.id}')">${t.l}</button>`).join('')}
+function st(t){tab=t;bn();rend()}
+function rend(){upTS();const m=$('mc');
+switch(tab){case'overview':m.innerHTML=rOv();break;case'vuag':m.innerHTML=rDt('VUAG');break;case'btc':m.innerHTML=rDt('BTC');break;case'us':m.innerHTML=rUS();break;case'india':m.innerHTML=rInd();break;case'gold':m.innerHTML=rDt('GOLD');break;case'cashisa':m.innerHTML=rSim('CASHISA');break;case'savings':m.innerHTML=rSav();break;case'logbook':m.innerHTML=rLog();break;case'whatif':m.innerHTML=rWI();break;case'plans':m.innerHTML=rPlans();break}}
+
+/* ===================== OVERVIEW ===================== */
+function gaf(){return D.overviewFilter?.length>0?D.overviewFilter:ALL}
+function tf(k){if(!D.overviewFilter?.length||D.overviewFilter.length===ALL.length)D.overviewFilter=[k];else if(D.overviewFilter.includes(k)){D.overviewFilter=D.overviewFilter.filter(x=>x!==k);if(!D.overviewFilter.length)D.overviewFilter=null}else{D.overviewFilter.push(k);if(D.overviewFilter.length===ALL.length)D.overviewFilter=null}rend()}
+
+function rOv(){
+const ak=gaf(),isF=D.overviewFilter?.length>0&&D.overviewFilter.length<ALL.length;
+const p=cpf(ak),b=p.bd;
+const chips=ALL.map(k=>`<div class="fc${ak.includes(k)?' act':''}" onclick="tf('${k}')"><span class="dot" style="background:${AC[k]}"></span>${AN[k]}</div>`).join('');
+const rb=isF?`<div class="fc" onclick="D.overviewFilter=null;rend()" style="border-color:var(--bl);color:var(--bl)">✕ All</div>`:'';
+const ai=Object.entries(b).filter(([,v])=>v.cv>0).sort((a,c)=>c[1].cv-a[1].cv);
+const ab_=ai.map(([k,v])=>{const pc=p.tv>0?(v.cv/p.tv*100):0;return`<div class="as_" style="width:${pc}%;background:${AC[k]}"><span class="tp">${AN[k]}: ${fm(v.cv)} (${pc.toFixed(1)}%)</span>${pc>7?pc.toFixed(0)+'%':''}</div>`}).join('');
+const lg=ai.map(([k,v])=>`<div class="li"><div class="ld_" style="background:${AC[k]}"></div>${AN[k]} ${fm(v.cv)}</div>`).join('');
+const rows=Object.entries(b).map(([k,v])=>{const r=RM[k],rc=r==='Low'?'rl':r==='Medium'?'rm':'rh';
+return`<tr><td><div class="ab"><div class="adot" style="background:${AC[k]}"></div>${AN[k]}</div></td><td class="mono">${fm(v.ti)}</td><td class="mono">${fm(v.cv)}</td><td class="mono ${cl(v.pnl)}"><span class="live-pnl"><span class="live-dot"></span>${fpnl(v.pnl)}</span></td><td class="mono ${cl(v.pp)}">${fp(v.pp)}</td><td>${p.tv>0?(v.cv/p.tv*100).toFixed(1)+'%':'0%'}</td><td><span class="rt ${rc}">${r}</span></td></tr>`}).join('');
+const logH=D._liveLog?.length?`<div style="margin-top:6px;font-size:10px;color:var(--t3)">${D._liveLog.join(' · ')}</div>`:'';
+
+return`<div class="pb"><div class="pt"><span style="font-size:16px">📊</span> Portfolio ${lsTag()}</div>
+<div class="pbs">${curTgl()}<button class="bl_ b" onclick="fetchLive()"><span class="pls"></span> Fetch Live</button><button class="be b" onclick="openPr()">✏️ Manual</button></div></div>${logH}
+<div class="sg">
+<div class="sc bl"><div class="sl">Invested (active)</div><div class="sv mono">${fm(p.ti)}</div></div>
+<div class="sc ${p.pnl>=0?'gn':'rd'}"><div class="sl">Live Value</div><div class="sv mono">${fm(p.tv)}</div><div class="sch_ ${cl(p.pnl)}"><span class="live-pnl"><span class="live-dot"></span>${fpnl(p.pnl)} (${fp(p.pp)})</span></div></div>
+<div class="sc am"><div class="sl">Lloyds</div><div class="sv mono">${fm(D.lloydsBalance)}</div></div>
+<div class="sc pu"><div class="sl">Net Worth</div><div class="sv mono">${fm(p.tv+D.lloydsBalance)}</div></div></div>
+<div class="cd"><div class="ch"><div class="ct">Filter</div>${isF?`<span style="font-size:11px;color:var(--bl)">${ak.length}/${ALL.length}</span>`:''}</div><div class="fb">${chips}${rb}</div></div>
+<div class="cd"><div class="ct" style="margin-bottom:10px">Allocation</div><div class="abc">${ab_}</div><div class="al">${lg}</div></div>
+<div class="cd"><div class="ch"><div class="ct">${isF?'Filtered':'All'} Holdings (Active)</div><button class="bp b" onclick="om()">+ Add</button></div>
+<div class="tw"><table><thead><tr><th>Asset</th><th>Invested</th><th>Live Value</th><th>Live P&L</th><th>%</th><th>Alloc</th><th>Risk</th></tr></thead><tbody>${rows}</tbody>
+<tfoot><tr style="font-weight:700;border-top:2px solid var(--bd)"><td>Total</td><td class="mono">${fm(p.ti)}</td><td class="mono">${fm(p.tv)}</td><td class="mono ${cl(p.pnl)}">${fpnl(p.pnl)}</td><td class="mono ${cl(p.pp)}">${fp(p.pp)}</td><td>100%</td><td></td></tr></tfoot></table></div></div>`}
+
+/* ===================== DETAIL (with live P&L per row) ===================== */
+function rDt(key){
+const c=ca(key),hs=D.holdings[key]||[];
+const cpNow=getCP(key);const fC=fmG;const avg=c.tq>0?c.ti/c.tq:0;
+const activeH=hs.filter(h=>!h.sold),soldH=hs.filter(h=>h.sold);
+const hasOverride=D._qtyOverride?.[key]!==undefined&&D._qtyOverride?.[key]!==null&&D._qtyOverride?.[key]!=='';
+const qtyDiff=hasOverride?c.tq-c.calcQty:0;
+
+function txRow(h,i){
+  const t=calcTxPnl(h,key);const isSold=h.sold;const fee=h.f||0;
+  return`<tr class="${isSold?'sold-row':''}">
+  <td>${fd(h.d)}</td><td class="mono">${fC(h.p)}</td><td class="mono">${h.q.toFixed(6)}</td><td class="mono">${fC(t.grossInv)}</td>
+  <td class="mono" style="color:var(--or)">${fee>0?fC(fee):'—'}</td>
+  <td class="mono">${fC(t.inv)}</td>
+  <td class="mono">${isSold?fC(t.val):`<span class="live-pnl"><span class="live-dot"></span>${fC(t.val)}</span>`}</td>
+  <td class="mono ${cl(t.pnl)}">${t.pnl>=0?'+':''}${fC(t.pnl)}</td>
+  <td class="mono ${cl(t.pp)}">${fp(t.pp)}</td>
+  <td><span class="st-tag ${isSold?'st-sold':'st-hold'}">${isSold?'SOLD':'HOLDING'}</span></td>
+  <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;font-size:11px;color:var(--t3)">${isSold?fd(h.sellDate):''}${h.n?' '+h.n:''}</td>
+  <td style="white-space:nowrap">
+    ${!isSold?`<button class="sb" onclick="openSell('${key}',${i})" title="Mark as sold">💰</button>`:
+    `<button class="sb" onclick="unSell('${key}',${i})" title="Undo sell">↩</button>`}
+    <button class="eb" onclick="editH('${key}',${i})" title="Edit">✎</button>
+    <button class="db" onclick="dh('${key}',${i})" title="Delete">✕</button>
+  </td></tr>`}
+
+const rows=hs.map((h,i)=>txRow(h,i)).join('');
+
+// Live price card
+const liveCard=`<div class="cd" style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-color:rgba(52,211,153,.2);background:linear-gradient(135deg,rgba(52,211,153,.04),rgba(96,165,250,.04))">
+<div><span style="font-size:11px;color:var(--t3);text-transform:uppercase">Live Price</span>
+<div class="mono" style="font-size:22px;font-weight:600"><span class="live-pnl"><span class="live-dot"></span>${fC(cpNow)}</span></div></div>
+<div style="text-align:right"><span style="font-size:11px;color:var(--t3)">Breakeven: ${fC(avg)}</span><br>
+<span style="font-size:11px;color:${cpNow>=avg?'var(--gn)':'var(--rd)'}">${cpNow>=avg?'▲ Above':'▼ Below'} breakeven by ${fC(Math.abs(cpNow-avg))}</span></div>
+<button class="bl_ b" onclick="fetchSingle('${key}')" style="font-size:11px;padding:6px 14px"><span class="pls"></span> Refresh</button>
+</div>`;
+
+return`${liveCard}
+<div class="sg">
+<div class="sc bl"><div class="sl">${AN[key]} Invested (active)</div><div class="sv mono">${fC(c.ti)}</div>${c.tfee>0?`<div class="sch_" style="color:var(--or)">Fees: ${fC(c.tfee)}</div>`:''}</div>
+<div class="sc ${c.pnl>=0?'gn':'rd'}"><div class="sl">Live Value</div><div class="sv mono">${fC(c.cv)}</div><div class="sch_ ${cl(c.pnl)}"><span class="live-pnl"><span class="live-dot"></span>${c.pnl>=0?'+':''}${fC(c.pnl)} (${fp(c.pp)})</span></div></div>
+<div class="sc am"><div class="sl">Avg Buy (active)</div><div class="sv mono">${fC(avg)}</div></div>
+<div class="sc pu"><div class="sl">Qty (active) <button class="eb" onclick="editQtyOverride('${key}')" title="Set actual qty" style="font-size:11px;vertical-align:middle">✎</button>${hasOverride?`<button class="db" onclick="clearQtyOverride('${key}')" title="Remove override" style="font-size:10px;vertical-align:middle">✕</button>`:''}</div>
+<div class="sv mono">${c.tq.toFixed(8)}</div>
+${hasOverride?`<div class="sch_" style="color:var(--or)">Override active</div><div style="font-size:10px;color:var(--t3);margin-top:2px">Calc: ${c.calcQty.toFixed(8)}<br>Diff: ${qtyDiff>=0?'+':''}${qtyDiff.toFixed(8)}</div>${D._qtyOverrideNote?.[key]?`<div style="font-size:10px;color:var(--t2);margin-top:2px;font-style:italic">${D._qtyOverrideNote[key]}</div>`:''}`:''}
+</div></div>
+${c.rinv>0?`<div class="cd" style="padding:14px 18px;background:rgba(139,149,171,.06);border-color:rgba(139,149,171,.15)"><div class="ct" style="margin-bottom:6px">Realised (Sold)</div><div style="display:flex;gap:20px;font-size:13px"><span>Cost: ${fC(c.rinv)}</span><span>Sold for: ${fC(c.rval)}</span><span class="${cl(c.rpnl)}">P&L: ${c.rpnl>=0?'+':''}${fC(c.rpnl)} (${fp(c.rpp)})</span></div></div>`:''}
+<div class="cd"><div class="ch"><div class="ct">All Transactions</div><div style="display:flex;gap:6px;align-items:center"><button class="bp b" onclick="om('${key}')">+ Buy</button></div></div>
+<div class="tw"><table><thead><tr><th>Date</th><th>Buy</th><th>Qty</th><th>Gross Cost</th><th>Fee</th><th>Net Cost</th><th>Value</th><th>Net P&L</th><th>%</th><th>Status</th><th>Notes</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`}
+
+function rUS(){
+const hs=D.holdings.US||[],c=ca('US');
+// Track which stocks are in "merged view" 
+if(!D._usMergeView)D._usMergeView={};
+
+// Group by stock name
+const groups={};
+hs.forEach((h,i)=>{const s=h.s||'Unknown';if(!groups[s])groups[s]=[];groups[s].push({...h,_i:i})});
+
+let allRows='';
+for(const[stockName,items]of Object.entries(groups)){
+  const activeItems=items.filter(x=>!x.sold);
+  const soldItems=items.filter(x=>x.sold);
+  const totalInv=activeItems.reduce((s,h)=>s+(h.g||0)+(h.f||0),0);
+  const totalQty=activeItems.reduce((s,h)=>s+h.q,0);
+  const cpNow=D.usStockPrices[stockName]||0;
+  const totalVal=totalQty*cpNow*liveUsdGbp();
+  const grpPnl=totalVal-totalInv;
+  const grpPp=totalInv>0?grpPnl/totalInv:0;
+  const avgBuy=totalQty>0?activeItems.reduce((s,h)=>s+h.p*h.q,0)/totalQty:0;
+  const totalFees=activeItems.reduce((s,h)=>s+(h.f||0),0);
+  const isMergedView=D._usMergeView[stockName]||false;
+  const hasMultiple=activeItems.length>1;
+  const ticker=D._tickers?.[stockName]||UST[stockName]||'';
+
+  // Stock group header — ALWAYS shows combined stats
+  allRows+=`<tr style="background:rgba(167,139,250,.08);border-bottom:2px solid var(--pu)">
+    <td colspan="2"><strong style="font-size:13px">${stockName}</strong>${ticker?` <span style="font-size:10px;color:var(--t3)">(${ticker})</span>`:''}</td>
+    <td class="mono" style="font-size:12px;font-weight:600">${totalQty.toFixed(6)}</td>
+    <td class="mono" style="font-size:12px;font-weight:600">${fmG(totalInv)}</td>
+    <td></td>
+    <td class="mono" style="font-size:12px"><span class="live-pnl"><span class="live-dot"></span>${fmU(cpNow)}</span></td>
+    <td class="mono" style="font-size:12px;font-weight:600">${fmG(totalVal)}</td>
+    <td class="mono ${cl(grpPnl)}" style="font-size:12px;font-weight:600">${grpPnl>=0?'+':''}${fmG(grpPnl)}</td>
+    <td class="mono ${cl(grpPp)}" style="font-size:12px;font-weight:600">${fp(grpPp)}</td>
+    <td></td><td style="font-size:10px;color:var(--t3)">Avg: $${avgBuy.toFixed(2)}${totalFees>0?' · Fee: '+fmG(totalFees):''}</td>
+    <td>${hasMultiple?`<button class="b" style="font-size:10px;padding:3px 8px;${isMergedView?'background:var(--bld);border-color:var(--bl);color:var(--bl)':''}" onclick="toggleMergeView('${stockName.replace(/'/g,"\\'")}')">${isMergedView?'⊖ Expand':'⊕ Merge View'}</button>`:''}</td>
+  </tr>`;
+
+  if(isMergedView&&hasMultiple){
+    // Merged view — single summary row
+    const avgRate=activeItems.filter(h=>h.r).length>0?activeItems.reduce((s,h)=>s+(h.r||0),0)/activeItems.filter(h=>h.r).length:0;
+    allRows+=`<tr style="font-size:11px;background:rgba(96,165,250,.03)">
+      <td style="padding-left:20px;color:var(--bl)">📊 Merged (${activeItems.length} buys)</td>
+      <td class="mono">${fmU(avgBuy)}</td>
+      <td class="mono">${totalQty.toFixed(6)}</td>
+      <td class="mono">${fmG(totalInv)}</td>
+      <td class="mono" style="color:var(--t3)">${avgRate?avgRate.toFixed(4):'—'}</td>
+      <td class="mono"><span class="live-pnl"><span class="live-dot"></span>${fmU(cpNow)}</span></td>
+      <td class="mono">${fmG(totalVal)}</td>
+      <td class="mono ${cl(grpPnl)}">${grpPnl>=0?'+':''}${fmG(grpPnl)}</td>
+      <td class="mono ${cl(grpPp)}">${fp(grpPp)}</td>
+      <td><span class="st-tag st-hold">HOLD</span></td>
+      <td style="font-size:10px;color:var(--t3)">Breakeven: $${totalInv>0?(totalInv/(totalQty*liveUsdGbp())).toFixed(2):'—'}</td>
+      <td></td>
+    </tr>`;
+  } else {
+    // Expanded view — individual rows
+    activeItems.forEach(h=>{
+      const t=calcTxPnl(h,'US');const cp_=D.usStockPrices[h.s]||h.p;
+      const fxUsed=h.r?h.r.toFixed(4):'—';
+      allRows+=`<tr style="font-size:11px">
+        <td style="padding-left:20px;color:var(--t3)">${fd(h.d)}</td>
+        <td class="mono">${fmU(h.p)}</td>
+        <td class="mono">${h.q.toFixed(6)}</td>
+        <td class="mono">${fmG(t.inv)}</td>
+        <td class="mono" style="color:var(--t3)">${fxUsed}</td>
+        <td class="mono"><span class="live-pnl"><span class="live-dot"></span>${fmU(cp_)}</span></td>
+        <td class="mono">${fmG(t.val)}</td>
+        <td class="mono ${cl(t.pnl)}">${t.pnl>=0?'+':''}${fmG(t.pnl)}</td>
+        <td class="mono ${cl(t.pp)}">${fp(t.pp)}</td>
+        <td><span class="st-tag st-hold">HOLD</span></td>
+        <td style="max-width:60px;overflow:hidden;text-overflow:ellipsis;font-size:10px;color:var(--t3)">${h.n||''}</td>
+        <td style="white-space:nowrap"><button class="sb" onclick="openSell('US',${h._i})">💰</button><button class="eb" onclick="editH('US',${h._i})">✎</button><button class="db" onclick="dh('US',${h._i})">✕</button></td>
+      </tr>`;
+    });
+  }
+
+  // Sold items always shown individually
+  soldItems.forEach(h=>{
+    const t=calcTxPnl(h,'US');
+    allRows+=`<tr class="sold-row" style="font-size:11px">
+      <td style="padding-left:20px;color:var(--t3)">${fd(h.d)}</td>
+      <td class="mono">${fmU(h.p)}</td>
+      <td class="mono">${h.q.toFixed(6)}</td>
+      <td class="mono">${fmG(t.inv)}</td>
+      <td class="mono" style="color:var(--t3)">${h.r?h.r.toFixed(4):'—'}</td>
+      <td class="mono">${fmU(h.sellPrice||0)}</td>
+      <td class="mono">${fmG(t.val)}</td>
+      <td class="mono ${cl(t.pnl)}">${t.pnl>=0?'+':''}${fmG(t.pnl)}</td>
+      <td class="mono ${cl(t.pp)}">${fp(t.pp)}</td>
+      <td><span class="st-tag st-sold">SOLD</span></td>
+      <td style="font-size:10px;color:var(--t3)">${h.n||''}</td>
+      <td style="white-space:nowrap"><button class="sb" onclick="unSell('US',${h._i})">↩</button><button class="eb" onclick="editH('US',${h._i})">✎</button><button class="db" onclick="dh('US',${h._i})">✕</button></td>
+    </tr>`;
+  });
+}
+
+return`<div class="sg"><div class="sc bl"><div class="sl">US Invested (active, £)</div><div class="sv mono">${fmG(c.ti)}</div></div><div class="sc ${c.pnl>=0?'gn':'rd'}"><div class="sl">Live Value (£)</div><div class="sv mono">${fmG(c.cv)}</div><div class="sch_ ${cl(c.pnl)}"><span class="live-pnl"><span class="live-dot"></span>${c.pnl>=0?'+':''}${fmG(c.pnl)} (${fp(c.pp)})</span></div></div>
+<div class="sc am"><div class="sl">Live USD→GBP</div><div class="sv mono">${liveUsdGbp().toFixed(4)}</div></div></div>
+
+<!-- Live stock prices card -->
+<div class="cd" style="border-color:rgba(52,211,153,.2);background:linear-gradient(135deg,rgba(52,211,153,.04),rgba(96,165,250,.04))">
+<div class="ch"><div class="ct">Live Stock Prices</div><button class="bl_ b" style="font-size:11px;padding:6px 14px" onclick="fetchLive()"><span class="pls"></span> Refresh All</button></div>
+<div style="display:flex;flex-wrap:wrap;gap:14px">${Object.entries(D.usStockPrices).map(([name,price])=>{
+const ticker=D._tickers?.[name]||UST[name]||'';
+return`<div style="padding:10px 14px;background:var(--bgi);border-radius:8px;min-width:130px">
+<div style="font-size:10px;color:var(--t3);text-transform:uppercase">${name}${ticker?' ('+ticker+')':''}</div>
+<div class="mono" style="font-size:16px"><span class="live-pnl"><span class="live-dot"></span>${fmU(price)}</span></div>
+<div class="mono" style="font-size:11px;color:var(--t3)">${fmG(price*liveUsdGbp())}</div>
+</div>`}).join('')}</div></div>
+
+${c.rinv>0?`<div class="cd" style="padding:14px 18px;background:rgba(139,149,171,.06);border-color:rgba(139,149,171,.15)"><div class="ct" style="margin-bottom:6px">Realised (Sold)</div><div style="display:flex;gap:20px;font-size:13px"><span>Cost: ${fmG(c.rinv)}</span><span>Sold for: ${fmG(c.rval)}</span><span class="${cl(c.rpnl)}">P&L: ${c.rpnl>=0?'+':''}${fmG(c.rpnl)} (${fp(c.rpp)})</span></div></div>`:''}
+<div class="cd"><div class="ch"><div class="ct">US Holdings</div><div style="display:flex;gap:6px;align-items:center">
+<button class="b" style="font-size:10px;padding:4px 10px" onclick="toggleAllMerge(true)">⊕ Merge All</button>
+<button class="b" style="font-size:10px;padding:4px 10px" onclick="toggleAllMerge(false)">⊖ Expand All</button>
+<button class="bp b" onclick="om('US')">+ Add</button></div></div>
+<div class="tw"><table><thead><tr><th>Date</th><th>Buy $</th><th>Qty</th><th>Inv £</th><th>FX Rate</th><th>Price $</th><th>Val £</th><th>P&L</th><th>%</th><th>Status</th><th>Notes</th><th></th></tr></thead><tbody>${allRows}</tbody></table></div></div>`}
+
+function rInd(){
+const c=ca('INDIA'),hs=D.holdings.INDIA||[];
+return`<div class="sg">
+<div class="sc bl"><div class="sl">Invested</div><div class="sv mono">${fmG(c.ti)}</div><div class="sch_" style="color:var(--t3)">${fmR(c.ti*D.fxRate)}</div></div>
+<div class="sc ${c.pnl>=0?'gn':'rd'}"><div class="sl">Value</div><div class="sv mono">${fmG(c.cv)}</div><div class="sch_" style="color:var(--t3)">${fmR(c.cv*D.fxRate)}</div><div class="sch_ ${cl(c.pnl)}">${c.pnl>=0?'+':''}${fmG(c.pnl)} (${fp(c.pp)})</div></div>
+<div class="sc am"><div class="sl">FX Rate</div><div class="sv mono">£1 = ₹${D.fxRate.toFixed(2)}</div></div></div>
+<div class="cd"><div class="tw"><table><thead><tr><th>Date</th><th>Inv £</th><th>Inv ₹</th><th>Status</th><th>Notes</th><th></th></tr></thead><tbody>
+${hs.map((h,i)=>`<tr class="${h.sold?'sold-row':''}"><td>${fd(h.d)}</td><td class="mono">${fmG(h.g||0)}</td><td class="mono">${fmR((h.g||0)*D.fxRate)}</td><td><span class="st-tag ${h.sold?'st-sold':'st-hold'}">${h.sold?'SOLD':'HOLD'}</span></td><td>${h.n||'—'}</td><td><button class="eb" onclick="editH('INDIA',${i})">✎</button><button class="db" onclick="dh('INDIA',${i})">✕</button></td></tr>`).join('')}
+</tbody></table></div></div>`}
+
+function rSim(key){const c=ca(key);
+return`<div class="sg"><div class="sc bl"><div class="sl">${AN[key]} Invested</div><div class="sv mono">${fmG(c.ti)}</div></div><div class="sc ${c.pnl>=0?'gn':'rd'}"><div class="sl">Value</div><div class="sv mono">${fmG(c.cv)}</div><div class="sch_ ${cl(c.pnl)}">${c.pnl>=0?'+':''}${fmG(c.pnl)} (${fp(c.pp)})</div></div></div>
+<div class="cd"><p style="color:var(--t2)">Use <strong>Edit Manually</strong> or <strong>Fetch Live</strong> from Overview.</p></div>`}
+
+/* ===================== SAVINGS ===================== */
+function rSav(){
+const all=D.savings||[];
+const years=[...new Set(all.map(s=>{const p=s.month.split(' ');return p[1]?('20'+p[1].replace(/^20/,'')):null}).filter(Boolean))].sort();
+const yf=D.savingsYearFilter;
+const fil=yf?all.filter(s=>{const y=s.month.split(' ')[1];return y&&('20'+y.replace(/^20/,''))===yf}):all;
+const mx=Math.max(...fil.map(r=>r.amount),1);
+const tSal=fil.reduce((a,r)=>a+(r.salary||0),0),tSav=fil.reduce((a,r)=>a+r.amount,0);
+const tRent=fil.reduce((a,r)=>a+(r.rent||0),0),tFood=fil.reduce((a,r)=>a+(r.food||0),0),tOth=fil.reduce((a,r)=>a+(r.other||0),0);
+const avgR=tSal>0?tSav/tSal:0;
+const yps=`<div class="yp"><div class="ypl${!yf?' act':''}" onclick="D.savingsYearFilter=null;rend()">All</div>${years.map(y=>`<div class="ypl${yf===y?' act':''}" onclick="D.savingsYearFilter='${y}';rend()">${y}</div>`).join('')}</div>`;
+const bars=fil.map((r)=>{const ri=all.indexOf(r);const w=r.amount/mx*100;const col=r.pct>=0.5?'var(--gn)':r.pct>=0.35?'var(--am)':'var(--rd)';
+return`<div class="sr"><div class="sm_">${r.month}</div><div class="sbb"><div class="sbf" style="width:${w}%;background:${col}">${(r.pct*100).toFixed(0)}%</div></div><div class="svl">${fmG(r.amount)}</div><div><button class="eb" onclick="editSv(${ri})">✎</button><button class="db" onclick="ds(${ri})">✕</button></div></div>`}).join('');
+
+return`<div class="sg">
+<div class="sc gn"><div class="sl">Saved (${fil.length}mo)</div><div class="sv mono">${fmG(tSav)}</div></div>
+<div class="sc am"><div class="sl">Avg Rate</div><div class="sv mono">${(avgR*100).toFixed(1)}%</div></div>
+<div class="sc bl"><div class="sl">Avg/Month</div><div class="sv mono">${fmG(tSav/(fil.length||1))}</div></div>
+<div class="sc pu"><div class="sl">Total Expenses</div><div class="sv mono">${fmG(tRent+tFood+(tOth>0?tOth:0))}</div></div></div>
+<div class="cd"><div class="ch"><div class="ct">Expenses (${yf||'All'})</div></div>
+<div class="eg">
+<div style="padding:10px;background:var(--bgi);border-radius:8px"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;margin-bottom:3px">Salary</div><div class="mono" style="font-size:16px">${fmG(tSal)}</div></div>
+<div style="padding:10px;background:var(--bgi);border-radius:8px"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;margin-bottom:3px">Rent</div><div class="mono" style="font-size:16px;color:var(--rd)">${fmG(tRent)}</div></div>
+<div style="padding:10px;background:var(--bgi);border-radius:8px"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;margin-bottom:3px">Food</div><div class="mono" style="font-size:16px;color:var(--or)">${fmG(tFood)}</div></div>
+<div style="padding:10px;background:var(--bgi);border-radius:8px"><div style="font-size:10px;color:var(--t3);text-transform:uppercase;margin-bottom:3px">Other</div><div class="mono" style="font-size:16px;color:var(--am)">${fmG(tOth>0?tOth:0)}</div></div></div></div>
+<div class="cd"><div class="ch"><div class="ct">Monthly</div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${yps}<button class="bp b" onclick="osm()">+ Add</button></div></div>
+<div class="tw" style="margin-bottom:10px"><table><thead><tr><th>Month</th><th>Salary</th><th>Rent</th><th>Food</th><th>Other</th><th>Saved</th><th>Rate</th><th></th></tr></thead>
+<tbody>${fil.map((r)=>{const ri=all.indexOf(r);return`<tr><td>${r.month}</td><td class="mono">${fmG(r.salary||0)}</td><td class="mono">${fmG(r.rent||0)}</td><td class="mono">${fmG(r.food||0)}</td><td class="mono">${fmG(r.other>0?r.other:0)}</td><td class="mono pos">${fmG(r.amount)}</td><td class="mono ${r.pct>=.5?'pos':r.pct>=.35?'':'neg'}">${(r.pct*100).toFixed(0)}%</td><td><button class="eb" onclick="editSv(${ri})">✎</button><button class="db" onclick="ds(${ri})">✕</button></td></tr>`}).join('')}</tbody>
+<tfoot><tr style="font-weight:700;border-top:2px solid var(--bd)"><td>Total</td><td class="mono">${fmG(tSal)}</td><td class="mono">${fmG(tRent)}</td><td class="mono">${fmG(tFood)}</td><td class="mono">${fmG(tOth>0?tOth:0)}</td><td class="mono pos">${fmG(tSav)}</td><td class="mono">${(avgR*100).toFixed(0)}%</td><td></td></tr></tfoot></table></div>
+<div class="ct" style="margin-bottom:8px">Visual</div>${bars}</div>`}
+
+/* ===================== LOGBOOK ===================== */
+function rLog(){
+const log=D.logbook||[];
+
+// Build monthly investment summary from ALL holdings across all assets
+const monthlyData={};
+ALL.forEach(k=>{
+  const hs=D.holdings[k]||[];
+  hs.forEach(h=>{
+    if(h.sold&&h.sellDate){
+      // Count sells too
+      const d=new Date(h.sellDate);if(isNaN(d))return;
+      const mk=MONTH_ORDER_G[d.getUTCMonth()]+' '+String(d.getUTCFullYear()).slice(2);
+      if(!monthlyData[mk])monthlyData[mk]={buys:0,sells:0,fees:0,byAsset:{},date:d};
+      // sell proceeds approximation
+    }
+    const d=new Date(h.d);if(isNaN(d))return;
+    const mk=MONTH_ORDER_G[d.getUTCMonth()]+' '+String(d.getUTCFullYear()).slice(2);
+    if(!monthlyData[mk])monthlyData[mk]={buys:0,sells:0,fees:0,byAsset:{},date:d};
+    const inv=['VUAG','BTC','GOLD'].includes(k)?h.p*h.q:(h.g||0);
+    const fee=h.f||0;
+    if(!h.sold){
+      monthlyData[mk].buys+=inv+fee;
+      monthlyData[mk].fees+=fee;
+      const aName=AN[k]||(k==='US'?(h.s||'US'):k);
+      if(!monthlyData[mk].byAsset[aName])monthlyData[mk].byAsset[aName]=0;
+      monthlyData[mk].byAsset[aName]+=inv+fee;
+    }
+  });
+});
+
+// Also scan logbook for sell entries
+log.forEach(e=>{
+  if(e.type==='SELL'&&e.date){
+    const d=new Date(e.date);if(isNaN(d))return;
+    const mk=MONTH_ORDER_G[d.getUTCMonth()]+' '+String(d.getUTCFullYear()).slice(2);
+    if(!monthlyData[mk])monthlyData[mk]={buys:0,sells:0,fees:0,byAsset:{},date:d};
+    monthlyData[mk].sells+=(e.total||0);
+  }
+});
+
+// Sort months chronologically
+const sortedMonths=Object.entries(monthlyData).sort((a,b)=>a[1].date-b[1].date);
+const totalInvested=sortedMonths.reduce((s,[,m])=>s+m.buys,0);
+const totalSold=sortedMonths.reduce((s,[,m])=>s+m.sells,0);
+const totalFees=sortedMonths.reduce((s,[,m])=>s+m.fees,0);
+const maxMonth=Math.max(...sortedMonths.map(([,m])=>m.buys),1);
+
+// Monthly summary bars
+const monthBars=sortedMonths.map(([mk,m])=>{
+  const w=m.buys/maxMonth*100;
+  const assetBreak=Object.entries(m.byAsset).map(([a,v])=>`${a}: ${fmG(v)}`).join(' · ');
+  return`<div class="sr">
+    <div class="sm_">${mk}</div>
+    <div class="sbb"><div class="sbf" style="width:${w}%;background:var(--bl)">${m.buys>0?fmG(m.buys):''}</div></div>
+    <div class="svl">${fmG(m.buys)}</div>
+    <div style="flex-shrink:0;width:16px;text-align:center">${m.sells>0?'<span title="Sold '+fmG(m.sells)+'" style="color:var(--rd);font-size:12px">↓</span>':''}</div>
+  </div>
+  <div style="padding:0 0 6px 70px;font-size:10px;color:var(--t3)">${assetBreak}</div>`;
+}).join('');
+
+// Logbook table
+const rows=log.slice().reverse().map((e,idx)=>{const ri=log.length-1-idx;
+return`<tr><td>${fd(e.date)}</td><td><span class="${e.type==='BUY'?'pos':'neg'}" style="font-weight:600">${e.type}</span></td><td><div class="ab"><div class="adot" style="background:${AC[e.asset]||'#666'}"></div>${AN[e.asset]||e.asset}${e.stockName?' — '+e.stockName:''}</div></td><td class="mono">${e.price?fmG(e.price):'—'}</td><td class="mono">${e.qty||'—'}</td><td class="mono">${e.total?fmG(e.total):'—'}</td><td class="mono" style="color:var(--or)">${e.fee?fmG(e.fee):'—'}</td><td style="max-width:120px;overflow:hidden;text-overflow:ellipsis">${e.notes||'—'}</td><td><button class="eb" onclick="editLog(${ri})">✎</button><button class="db" onclick="dl(${ri})">✕</button></td></tr>`}).join('');
+
+return`
+<div class="sg">
+  <div class="sc bl"><div class="sl">Total Deployed</div><div class="sv mono">${fmG(totalInvested)}</div></div>
+  <div class="sc rd"><div class="sl">Total Sold</div><div class="sv mono">${fmG(totalSold)}</div></div>
+  <div class="sc am"><div class="sl">Total Fees Paid</div><div class="sv mono">${fmG(totalFees)}</div></div>
+  <div class="sc pu"><div class="sl">Avg/Month</div><div class="sv mono">${fmG(sortedMonths.length>0?totalInvested/sortedMonths.length:0)}</div></div>
+</div>
+
+<div class="cd">
+  <div class="ch"><div class="ct">Monthly Investment Tracker</div></div>
+  <p style="color:var(--t2);font-size:12px;margin-bottom:12px">How much you invested each month, broken down by asset. Built from your actual holdings data.</p>
+  ${sortedMonths.length>0?monthBars:'<p style="color:var(--t3)">No data yet.</p>'}
+</div>
+
+<!-- Monthly table -->
+<div class="cd">
+  <div class="ct" style="margin-bottom:12px">Monthly Breakdown</div>
+  <div class="tw"><table>
+    <thead><tr><th>Month</th><th>Invested</th><th>Sold</th><th>Net</th><th>Fees</th><th>Assets</th></tr></thead>
+    <tbody>${sortedMonths.map(([mk,m])=>{
+      const net=m.buys-m.sells;
+      const assets=Object.entries(m.byAsset).map(([a,v])=>a).join(', ');
+      return`<tr><td>${mk}</td><td class="mono pos">${fmG(m.buys)}</td><td class="mono">${m.sells>0?fmG(m.sells):'—'}</td><td class="mono ${cl(m.buys-m.sells)}">${fmG(net)}</td><td class="mono" style="color:var(--or)">${m.fees>0?fmG(m.fees):'—'}</td><td style="font-size:11px;color:var(--t2);max-width:200px;white-space:normal">${assets||'—'}</td></tr>`;
+    }).join('')}</tbody>
+    <tfoot><tr style="font-weight:700;border-top:2px solid var(--bd)"><td>Total</td><td class="mono pos">${fmG(totalInvested)}</td><td class="mono">${totalSold>0?fmG(totalSold):'—'}</td><td class="mono">${fmG(totalInvested-totalSold)}</td><td class="mono" style="color:var(--or)">${fmG(totalFees)}</td><td></td></tr></tfoot>
+  </table></div>
+</div>
+
+<div class="cd"><div class="ch"><div class="ct">Transaction Log</div><button class="bp b" onclick="om()">+ Add</button></div>
+${log.length===0?'<p style="color:var(--t3);padding:12px 0">No transactions logged yet.</p>':`<div class="tw"><table><thead><tr><th>Date</th><th>Type</th><th>Asset</th><th>Price</th><th>Qty</th><th>Total</th><th>Fee</th><th>Notes</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`}</div>`}
+
+/* ===================== MODALS ===================== */
+function cm(id){$(id).classList.remove('act')}
+
+function om(pre){$('txMH').textContent='Add Transaction';$('txBtn').textContent='Add';$('txBtn').onclick=saveTx;$('txEI').value='-1';$('txEK').value='';
+$('txM').classList.add('act');$('txD').value=new Date().toISOString().slice(0,10);if(pre)$('txA').value=pre;['txP','txQ','txS','txN','txF','txR','txG','txTk'].forEach(id=>$(id).value='');$('txLiveP').textContent='—';$('txLiveP').style.color='var(--t3)';$('txT').value='BUY'}
+
+function editH(key,i){
+const h=D.holdings[key][i];$('txMH').textContent='Edit Transaction';$('txBtn').textContent='Save';$('txBtn').onclick=saveTx;$('txEI').value=i;$('txEK').value=key;
+$('txM').classList.add('act');$('txA').value=key;$('txD').value=h.d;$('txP').value=h.p||'';$('txQ').value=h.q||'';$('txS').value=h.s||'';$('txN').value=h.n||'';$('txF').value=h.f||'';$('txR').value=h.r||'';$('txG').value=(key==='US'&&h.g)?h.g:'';$('txTk').value=(D._tickers?.[h.s]||UST[h.s]||'');$('txLiveP').textContent='—';$('txT').value='BUY'}
+
+function saveTx(){
+const ei=parseInt($('txEI').value),ek=$('txEK').value;
+const asset=$('txA').value,type=$('txT').value,date=$('txD').value;
+const price=parseFloat($('txP').value)||0,qty=parseFloat($('txQ').value)||0;
+const sn=$('txS').value.trim(),notes=$('txN').value.trim(),fee=parseFloat($('txF').value)||0;
+const rate=parseFloat($('txR').value)||0;
+const gbpOverride=parseFloat($('txG').value)||0;
+const totalUSD=price*qty;
+// For US stocks: GBP invested = override if given, else USD*rate if rate given, else USD*live rate
+const gbpInv=asset==='US'?(gbpOverride||((rate>0)?totalUSD*rate:totalUSD*(D._usdGbp||0.77))):totalUSD;
+if(!date){alert('Enter date');return}
+if(ei>=0&&ek){const h=D.holdings[ek][ei];h.d=date;h.p=price;h.q=qty;h.n=notes;h.f=fee;
+  if(ek==='US'){h.s=sn;h.g=gbpInv;h.r=rate||h.r||0}
+  if(['INDIA','CASHISA','ANGEL_ONE','CRYPTO_PI'].includes(ek))h.g=gbpInv}
+else{D.logbook.push({date,type,asset,price,qty,total:totalUSD,stockName:sn,notes,fee});
+if(type==='BUY'){if(!D.holdings[asset])D.holdings[asset]=[];
+if(asset==='US'){D.holdings[asset].push({d:date,p:price,q:qty,s:sn,g:gbpInv,r:rate,n:notes,f:fee,sold:false});if(sn&&!D.usStockPrices[sn])D.usStockPrices[sn]=price;
+const tk=$('txTk').value.trim();if(sn&&tk){if(!D._tickers)D._tickers={};D._tickers[sn]=tk;UST[sn]=tk}}
+else if(['INDIA','CASHISA','ANGEL_ONE','CRYPTO_PI'].includes(asset))D.holdings[asset].push({d:date,p:0,q:0,g:gbpInv,n:notes,f:fee,sold:false});
+else D.holdings[asset].push({d:date,p:price,q:qty,n:notes,f:fee,sold:false})}}
+cm('txM');save()}
+
+function editLog(i){
+const e=D.logbook[i];$('txMH').textContent='Edit Log';$('txEI').value=i;$('txEK').value='_LOG';
+$('txM').classList.add('act');$('txA').value=e.asset;$('txD').value=e.date;$('txP').value=e.price||'';$('txQ').value=e.qty||'';$('txS').value=e.stockName||'';$('txN').value=e.notes||'';$('txF').value=e.fee||'';$('txT').value=e.type||'BUY';
+$('txBtn').textContent='Save';$('txBtn').onclick=function(){
+const date=$('txD').value,price=parseFloat($('txP').value)||0,qty=parseFloat($('txQ').value)||0,fee=parseFloat($('txF').value)||0;
+D.logbook[i]={...D.logbook[i],date,price,qty,total:price*qty,stockName:$('txS').value.trim(),notes:$('txN').value.trim(),fee,type:$('txT').value,asset:$('txA').value};
+cm('txM');$('txBtn').onclick=saveTx;save()}}
+
+/* --- Sell --- */
+function openSell(key,i){$('slM').classList.add('act');$('slK').value=key;$('slI').value=i;$('slD').value=new Date().toISOString().slice(0,10);$('slP').value='';$('slN').value='';$('slF').value=''}
+function confirmSell(){
+const k=$('slK').value,i=parseInt($('slI').value);
+const h=D.holdings[k][i];
+h.sold=true;h.sellDate=$('slD').value;h.sellPrice=parseFloat($('slP').value)||0;h.sellNote=$('slN').value.trim();h.sf=parseFloat($('slF').value)||0;
+D.logbook.push({date:h.sellDate,type:'SELL',asset:k,price:h.sellPrice,qty:h.q,total:h.sellPrice*h.q,stockName:h.s||'',notes:h.sellNote||'Sold',fee:h.sf});
+cm('slM');save()}
+function unSell(k,i){if(confirm('Undo sell? This will mark as active holding again.')){const h=D.holdings[k][i];h.sold=false;delete h.sellDate;delete h.sellPrice;delete h.sellNote;save()}}
+
+/* --- Prices --- */
+function openPr(){$('prM').classList.add('act');
+let h=Object.entries(PL).map(([k,l])=>`<div class="fg"><label>${l}</label><input type="number" step="any" id="p_${k}" value="${D.currentPrices[k]}"></div>`).join('');
+const us=Object.entries(D.usStockPrices).map(([n,p])=>`<div class="fg"><label>${n} ($)</label><input type="number" step="any" id="usp_${n.replace(/\s/g,'_')}" value="${p}"></div>`).join('');
+if(us)h+='<p style="font-size:10px;color:var(--t3);margin:8px 0 4px;text-transform:uppercase">US Stocks</p>'+us;
+h+=`<div class="fg" style="margin-top:8px"><label>GBP→INR Rate</label><input type="number" step="any" id="p_FX" value="${D.fxRate}"></div>`;
+$('prF').innerHTML=h;$('prL').value=D.lloydsBalance}
+function savePr(){
+Object.keys(PL).forEach(k=>{const v=parseFloat($('p_'+k)?.value);if(!isNaN(v))D.currentPrices[k]=v});
+Object.keys(D.usStockPrices).forEach(n=>{const v=parseFloat($('usp_'+n.replace(/\s/g,'_'))?.value);if(!isNaN(v))D.usStockPrices[n]=v});
+const lb=parseFloat($('prL').value);if(!isNaN(lb))D.lloydsBalance=lb;
+const fx=parseFloat($('p_FX')?.value);if(!isNaN(fx))D.fxRate=fx;cm('prM');save()}
+
+/* --- Savings --- */
+function osm(){$('svMH').textContent='Add Month';$('svBtn').textContent='Add';$('svEI').value='-1';$('svM').classList.add('act');['svMo','svSal','svRent','svFood','svOth'].forEach(id=>$(id).value='')}
+function editSv(i){const s=D.savings[i];$('svMH').textContent='Edit Month';$('svBtn').textContent='Save';$('svEI').value=i;$('svM').classList.add('act');$('svMo').value=s.month;$('svSal').value=s.salary||'';$('svRent').value=s.rent||'';$('svFood').value=s.food||'';$('svOth').value=s.other||''}
+function saveSv(){
+const ei=parseInt($('svEI').value);const mo=$('svMo').value.trim(),sal=parseFloat($('svSal').value),rent=parseFloat($('svRent').value)||0,food=parseFloat($('svFood').value)||0,oth=parseFloat($('svOth').value)||0;
+if(!mo){alert('Enter month');return}if(isNaN(sal)){alert('Enter salary');return}
+const amount=sal-rent-food-oth,pct=sal>0?amount/sal:0;
+if(ei>=0)D.savings[ei]={month:mo,salary:sal,rent,food,other:oth,amount,pct};
+else D.savings.push({month:mo,salary:sal,rent,food,other:oth,amount,pct});cm('svM');save()}
+
+function dh(k,i){if(confirm('Delete?')){D.holdings[k].splice(i,1);save()}}
+function dl(i){if(confirm('Delete?')){D.logbook.splice(i,1);save()}}
+function ds(i){if(confirm('Remove?')){D.savings.splice(i,1);save()}}
+
+/* ===================== WHAT-IF SIMULATOR ===================== */
+let wiAsset='BTC',wiAmt=300,wiPrice=0,wiFee=0,wiTarget=0;
+
+function rWI(){
+// Current state of selected asset
+const key=wiAsset;
+const c=ca(key);
+const cpNow=(['VUAG','BTC','GOLD'].includes(key))?getCP(key):0;
+const simPrice=wiPrice||cpNow;
+const simFee=wiFee||0;
+const simAmt=wiAmt||0;
+const simQty=simPrice>0?(simAmt/simPrice):0;
+const fC=fmG;
+
+// Current holdings (active only)
+const curInv=c.ti, curQty=c.tq, curVal=c.cv;
+const curAvg=curQty>0?curInv/curQty:0;
+const curPnl=c.pnl, curPp=c.pp;
+
+// After hypothetical buy
+const newInv=curInv+simAmt+simFee;
+const newQty=curQty+simQty;
+const newAvg=newQty>0?newInv/newQty:0;
+const newVal=newQty*cpNow; // value at CURRENT live price
+const newPnl=newVal-newInv;
+const newPp=newInv>0?newPnl/newInv:0;
+
+// Breakeven price (what price does asset need to reach for 0 P&L)
+const breakeven=newQty>0?newInv/newQty:0;
+
+// Target price scenario
+const tgt=wiTarget||0;
+const tgtVal=tgt>0?newQty*tgt:0;
+const tgtPnl=tgt>0?tgtVal-newInv:0;
+const tgtPp=tgt>0&&newInv>0?tgtPnl/newInv:0;
+
+// Recovery: how much does buying low help?
+const avgDrop=curAvg>0?((newAvg-curAvg)/curAvg):0;
+const pnlImprovement=newPnl-curPnl;
+
+// Supported assets for simulator
+const simAssets=['VUAG','BTC','GOLD'];
+const assetOpts=simAssets.map(k=>`<option value="${k}"${k===wiAsset?' selected':''}>${AN[k]} (now: ${fC(getCP(k))})</option>`).join('');
+
+return`
+<div class="cd" style="border-color:var(--pu);background:linear-gradient(135deg,rgba(167,139,250,.04),rgba(96,165,250,.04))">
+<div class="ch"><div class="ct" style="color:var(--pu)">🧪 What-If Simulator</div></div>
+<p style="color:var(--t2);font-size:13px;margin-bottom:16px">Experiment with hypothetical buys to see how they'd affect your average cost, P&L, and breakeven price. Nothing here changes your real portfolio.</p>
+
+<div class="fr" style="margin-bottom:16px">
+  <div class="fg"><label>Asset</label><select onchange="wiAsset=this.value;wiPrice=0;rend()" style="padding:8px 10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bgi);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px">${assetOpts}</select></div>
+  <div class="fg"><label>Amount to invest (£)</label><input type="number" step="any" value="${wiAmt||''}" onchange="wiAmt=parseFloat(this.value)||0;rend()" style="padding:8px 10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bgi);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px"></div>
+  <div class="fg"><label>Buy price (leave 0 = current)</label><input type="number" step="any" value="${wiPrice||''}" placeholder="${cpNow.toFixed(2)}" onchange="wiPrice=parseFloat(this.value)||0;rend()" style="padding:8px 10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bgi);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px"></div>
+  <div class="fg"><label>Fee (£)</label><input type="number" step="any" value="${wiFee||''}" placeholder="0" onchange="wiFee=parseFloat(this.value)||0;rend()" style="padding:8px 10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bgi);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px"></div>
+</div>
+
+<div class="sg">
+<div class="sc bl"><div class="sl">You'd buy</div><div class="sv mono">${simQty.toFixed(6)}</div><div class="sch_" style="color:var(--t3)">@ ${fC(simPrice)}/unit</div></div>
+<div class="sc am"><div class="sl">New Avg Buy Price</div><div class="sv mono">${fC(newAvg)}</div><div class="sch_ ${avgDrop<=0?'pos':'neg'}">${avgDrop<=0?'↓':'↑'} ${Math.abs(avgDrop*100).toFixed(2)}% vs current</div></div>
+<div class="sc pu"><div class="sl">Breakeven Price</div><div class="sv mono">${fC(breakeven)}</div><div class="sch_" style="color:var(--t3)">to recover all cost</div></div>
+<div class="sc ${newPnl>=0?'gn':'rd'}"><div class="sl">New P&L (at live price)</div><div class="sv mono ${cl(newPnl)}">${newPnl>=0?'+':''}${fC(newPnl)}</div><div class="sch_ ${cl(newPp)}">${fp(newPp)}</div></div>
+</div>
+
+<!-- Comparison table -->
+<div class="cd" style="margin-top:0">
+<div class="ct" style="margin-bottom:12px">Before vs After Comparison</div>
+<div class="tw"><table>
+<thead><tr><th></th><th>Current (Now)</th><th>After Buy</th><th>Change</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--t2)">Total Invested</td><td class="mono">${fC(curInv)}</td><td class="mono">${fC(newInv)}</td><td class="mono" style="color:var(--or)">+${fC(simAmt+simFee)}</td></tr>
+<tr><td style="color:var(--t2)">Total Quantity</td><td class="mono">${curQty.toFixed(6)}</td><td class="mono">${newQty.toFixed(6)}</td><td class="mono pos">+${simQty.toFixed(6)}</td></tr>
+<tr><td style="color:var(--t2)">Avg Buy Price</td><td class="mono">${fC(curAvg)}</td><td class="mono">${fC(newAvg)}</td><td class="mono ${avgDrop<=0?'pos':'neg'}">${avgDrop<=0?'':'+'} ${(avgDrop*100).toFixed(2)}%</td></tr>
+<tr><td style="color:var(--t2)">Value (at live price)</td><td class="mono">${fC(curVal)}</td><td class="mono">${fC(newVal)}</td><td class="mono pos">+${fC(newVal-curVal)}</td></tr>
+<tr><td style="color:var(--t2)">P&L</td><td class="mono ${cl(curPnl)}">${curPnl>=0?'+':''}${fC(curPnl)}</td><td class="mono ${cl(newPnl)}">${newPnl>=0?'+':''}${fC(newPnl)}</td><td class="mono ${cl(pnlImprovement)}">${pnlImprovement>=0?'+':''}${fC(pnlImprovement)}</td></tr>
+<tr><td style="color:var(--t2)">P&L %</td><td class="mono ${cl(curPp)}">${fp(curPp)}</td><td class="mono ${cl(newPp)}">${fp(newPp)}</td><td class="mono ${cl(newPp-curPp)}">${(newPp-curPp)>=0?'+':''}${((newPp-curPp)*100).toFixed(2)}%</td></tr>
+<tr><td style="color:var(--t2)">Breakeven Price</td><td class="mono">${fC(curAvg)}</td><td class="mono">${fC(breakeven)}</td><td class="mono ${breakeven<=curAvg?'pos':'neg'}">${breakeven<=curAvg?'↓ Lower':'↑ Higher'}</td></tr>
+</tbody></table></div></div>
+
+<!-- Target price scenario -->
+<div class="cd" style="border-color:var(--am)">
+<div class="ct" style="margin-bottom:12px;color:var(--am)">🎯 Target Price Scenario</div>
+<p style="color:var(--t3);font-size:12px;margin-bottom:12px">What if the price reaches a specific target after your buy?</p>
+<div class="fr" style="margin-bottom:14px">
+  <div class="fg"><label>Target price</label><input type="number" step="any" value="${wiTarget||''}" placeholder="e.g. ${(cpNow*1.2).toFixed(2)}" onchange="wiTarget=parseFloat(this.value)||0;rend()" style="padding:8px 10px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bgi);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px"></div>
+  <div class="fg"><label>Quick targets</label>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;padding-top:4px">
+      <button class="b" style="font-size:10px;padding:4px 8px" onclick="wiTarget=cpNow*0.8;rend()">-20%</button>
+      <button class="b" style="font-size:10px;padding:4px 8px" onclick="wiTarget=cpNow*0.9;rend()">-10%</button>
+      <button class="b" style="font-size:10px;padding:4px 8px" onclick="wiTarget=cpNow*1.1;rend()">+10%</button>
+      <button class="b" style="font-size:10px;padding:4px 8px" onclick="wiTarget=cpNow*1.2;rend()">+20%</button>
+      <button class="b" style="font-size:10px;padding:4px 8px" onclick="wiTarget=cpNow*1.5;rend()">+50%</button>
+      <button class="b" style="font-size:10px;padding:4px 8px" onclick="wiTarget=cpNow*2;rend()">2x</button>
+    </div>
+  </div>
+</div>
+${tgt>0?`<div class="sg">
+<div class="sc ${tgtPnl>=0?'gn':'rd'}"><div class="sl">P&L at ${fC(tgt)}</div><div class="sv mono ${cl(tgtPnl)}">${tgtPnl>=0?'+':''}${fC(tgtPnl)}</div><div class="sch_ ${cl(tgtPp)}">${fp(tgtPp)}</div></div>
+<div class="sc am"><div class="sl">Portfolio Value</div><div class="sv mono">${fC(tgtVal)}</div></div>
+<div class="sc bl"><div class="sl">Price Change</div><div class="sv mono ${cl(tgt-cpNow)}">${tgt>=cpNow?'+':''}${((tgt-cpNow)/cpNow*100).toFixed(1)}%</div><div class="sch_" style="color:var(--t3)">${fC(cpNow)} → ${fC(tgt)}</div></div>
+</div>`:'<p style="color:var(--t3);font-size:12px">Enter a target price or use quick buttons above to see projected P&L.</p>'}
+</div>
+
+<!-- DCA scenarios -->
+<div class="cd">
+<div class="ct" style="margin-bottom:12px">📊 DCA Scenarios — What if you invest ${fC(simAmt)} weekly?</div>
+<div class="tw"><table>
+<thead><tr><th>Weeks</th><th>Total Added</th><th>New Qty</th><th>New Avg</th><th>Avg Change</th><th>Breakeven</th></tr></thead>
+<tbody>
+${[1,2,4,8,12].map(w=>{
+  const tInv=curInv+(simAmt+simFee)*w;
+  const tQty=curQty+simQty*w;
+  const tAvg=tQty>0?tInv/tQty:0;
+  const tBe=tAvg;
+  const avgCh=curAvg>0?(tAvg-curAvg)/curAvg:0;
+  return`<tr><td>${w}${w===1?' week':' weeks'}</td><td class="mono">${fC((simAmt+simFee)*w)}</td><td class="mono">${tQty.toFixed(6)}</td><td class="mono">${fC(tAvg)}</td><td class="mono ${avgCh<=0?'pos':'neg'}">${(avgCh*100).toFixed(2)}%</td><td class="mono">${fC(tBe)}</td></tr>`;
+}).join('')}
+</tbody></table></div>
+</div>
+`}
+
+/* ===================== PLANS ===================== */
+const MONTH_ORDER=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const ACTION_ICONS={BUY:'🟢',SELL:'🔴',HOLD:'⏸️',RESEARCH:'🔍',OTHER:'📝'};
+const PRI_COLORS={high:'var(--rd)',med:'var(--am)',low:'var(--gn)'};
+const PRI_LABELS={high:'🔴 High',med:'🟡 Medium',low:'🟢 Low'};
+let plansFilter=null; // null=all, or 'Apr 2026' etc
+
+function rPlans(){
+const plans=D.plans||[];
+// Group by month-year
+const grouped={};
+plans.forEach((p,i)=>{
+  const key=p.month+' '+p.year;
+  if(!grouped[key])grouped[key]={label:key,items:[]};
+  grouped[key].items.push({...p,_i:i});
+});
+// Sort groups chronologically
+const sortedKeys=Object.keys(grouped).sort((a,b)=>{
+  const [am,ay]=a.split(' '),[bm,by]=b.split(' ');
+  return(parseInt(ay)-parseInt(by))||MONTH_ORDER.indexOf(am)-MONTH_ORDER.indexOf(bm);
+});
+
+// Unique months for filter
+const filterPills=sortedKeys.length>0?`<div class="yp" style="margin-bottom:14px">
+<div class="ypl${!plansFilter?' act':''}" onclick="plansFilter=null;rend()">All</div>
+${sortedKeys.map(k=>`<div class="ypl${plansFilter===k?' act':''}" onclick="plansFilter='${k}';rend()">${k}</div>`).join('')}
+</div>`:'';
+
+const filtered=plansFilter?sortedKeys.filter(k=>k===plansFilter):sortedKeys;
+
+// Stats
+const total=plans.length;
+const buys=plans.filter(p=>p.action==='BUY');
+const totalPlanned=buys.reduce((s,p)=>s+(p.amount||0),0);
+const done=plans.filter(p=>p.done).length;
+
+// Render groups
+const groupsHtml=filtered.map(key=>{
+  const g=grouped[key];
+  const items=g.items.sort((a,b)=>{
+    const po={high:0,med:1,low:2};return(po[a.priority]||1)-(po[b.priority]||1);
+  });
+  const monthTotal=items.filter(i=>i.action==='BUY').reduce((s,i)=>s+(i.amount||0),0);
+
+  const rows=items.map(it=>{
+    const asset=it.asset?AN[it.asset]||it.asset:'General';
+    const aColor=it.asset?AC[it.asset]:'var(--t3)';
+    const doneClass=it.done?'sold-row':'';
+    return`<tr class="${doneClass}">
+      <td><span style="cursor:pointer;font-size:16px" onclick="toggleDone(${it._i})" title="${it.done?'Mark undone':'Mark done'}">${it.done?'☑':'☐'}</span></td>
+      <td>${ACTION_ICONS[it.action]||'📝'} ${it.action}</td>
+      <td><div class="ab"><div class="adot" style="background:${aColor}"></div>${asset}</div></td>
+      <td class="mono">${it.amount?fmG(it.amount):'—'}</td>
+      <td style="max-width:250px;white-space:normal;line-height:1.4">${it.note||'—'}</td>
+      <td><span style="color:${PRI_COLORS[it.priority]||'var(--t3)'}">${PRI_LABELS[it.priority]||it.priority}</span></td>
+      <td style="white-space:nowrap">
+        <button class="eb" onclick="editPlan(${it._i})" title="Edit">✎</button>
+        <button class="db" onclick="delPlan(${it._i})" title="Delete">✕</button>
+      </td></tr>`;
+  }).join('');
+
+  return`<div class="cd">
+    <div class="ch">
+      <div class="ct" style="font-size:14px;color:var(--t1)">${g.label}</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        ${monthTotal>0?`<span class="mono" style="font-size:11px;color:var(--am)">Planned: ${fmG(monthTotal)}</span>`:''}
+        <span style="font-size:11px;color:var(--t3)">${items.filter(i=>i.done).length}/${items.length} done</span>
+      </div>
+    </div>
+    <div class="tw"><table>
+      <thead><tr><th style="width:30px"></th><th>Action</th><th>Asset</th><th>Amount</th><th>Plan / Notes</th><th>Priority</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+  </div>`;
+}).join('');
+
+return`
+<div class="sg">
+  <div class="sc pu"><div class="sl">Total Plans</div><div class="sv mono">${total}</div></div>
+  <div class="sc am"><div class="sl">Planned Buys</div><div class="sv mono">${fmG(totalPlanned)}</div></div>
+  <div class="sc gn"><div class="sl">Completed</div><div class="sv mono">${done}/${total}</div></div>
+</div>
+
+<div class="cd">
+  <div class="ch">
+    <div class="ct">Investment Plans</div>
+    <button class="bp b" onclick="openPlanM()">+ Add Plan</button>
+  </div>
+  <p style="color:var(--t2);font-size:12px;margin-bottom:14px">Plan out what you want to buy, sell, or research each month. Tick items off as you complete them.</p>
+  ${filterPills}
+</div>
+
+${filtered.length===0&&plans.length===0?'<div class="cd"><p style="color:var(--t3);padding:12px 0">No plans yet. Add your first one to start planning your investment strategy!</p></div>':''}
+${filtered.length===0&&plans.length>0?'<div class="cd"><p style="color:var(--t3);padding:12px 0">No plans for this month.</p></div>':''}
+${groupsHtml}
+`}
+
+function openPlanM(){
+  $('plMH').textContent='Add Plan';$('plBtn').textContent='Add';$('plBtn').onclick=savePlan;$('plEI').value='-1';
+  $('plM').classList.add('act');
+  // Default to current or next month
+  const now=new Date();$('plMo').value=MONTH_ORDER[now.getMonth()];$('plYr').value=String(now.getFullYear());
+  $('plAs').value='';$('plAc').value='BUY';$('plAmt').value='';$('plNote').value='';$('plPri').value='med';
+}
+
+function editPlan(i){
+  const p=D.plans[i];$('plMH').textContent='Edit Plan';$('plBtn').textContent='Save';$('plBtn').onclick=savePlan;$('plEI').value=i;
+  $('plM').classList.add('act');
+  $('plMo').value=p.month||'Apr';$('plYr').value=p.year||'2026';
+  $('plAs').value=p.asset||'';$('plAc').value=p.action||'BUY';
+  $('plAmt').value=p.amount||'';$('plNote').value=p.note||'';$('plPri').value=p.priority||'med';
+}
+
+function savePlan(){
+  const ei=parseInt($('plEI').value);
+  const plan={
+    month:$('plMo').value, year:$('plYr').value,
+    asset:$('plAs').value, action:$('plAc').value,
+    amount:parseFloat($('plAmt').value)||0,
+    note:$('plNote').value.trim(),
+    priority:$('plPri').value,
+    done:ei>=0?(D.plans[ei]?.done||false):false
+  };
+  if(ei>=0)D.plans[ei]=plan;
+  else D.plans.push(plan);
+  cm('plM');save();
+}
+
+function toggleDone(i){D.plans[i].done=!D.plans[i].done;save()}
+function delPlan(i){if(confirm('Delete this plan?')){D.plans.splice(i,1);save()}}
+
+function editQtyOverride(key){
+  const cur=D._qtyOverride?.[key];
+  const c=ca(key);
+  const calcQty=c.calcQty;
+  const curNote=D._qtyOverrideNote?.[key]||'';
+  const newQty=prompt(`Set actual quantity for ${AN[key]}:\n\nCalculated from transactions: ${calcQty.toFixed(8)}\nCurrent override: ${cur!==undefined&&cur!==null?cur:'none'}\n\nEnter the real quantity you hold (or leave blank to clear):`,cur!==undefined&&cur!==null?cur:'');
+  if(newQty===null)return; // cancelled
+  if(newQty.trim()===''){clearQtyOverride(key);return}
+  const parsed=parseFloat(newQty);
+  if(isNaN(parsed)){alert('Invalid number');return}
+  if(!D._qtyOverride)D._qtyOverride={};
+  D._qtyOverride[key]=parsed;
+  const reason=prompt(`Reason for override (optional):\ne.g. "Platform deducted 0.003 BTC as trading fees"`,curNote);
+  if(reason!==null){
+    if(!D._qtyOverrideNote)D._qtyOverrideNote={};
+    D._qtyOverrideNote[key]=reason.trim();
+  }
+  save();
+}
+
+function clearQtyOverride(key){
+  if(D._qtyOverride)delete D._qtyOverride[key];
+  if(D._qtyOverrideNote)delete D._qtyOverrideNote[key];
+  save();
+}
+
+function toggleMergeView(stockName){
+  if(!D._usMergeView)D._usMergeView={};
+  D._usMergeView[stockName]=!D._usMergeView[stockName];
+  rend();
+}
+function toggleAllMerge(merge){
+  if(!D._usMergeView)D._usMergeView={};
+  const hs=D.holdings.US||[];
+  const stocks=[...new Set(hs.filter(h=>!h.sold).map(h=>h.s))];
+  stocks.forEach(s=>{
+    const count=hs.filter(h=>h.s===s&&!h.sold).length;
+    if(count>1)D._usMergeView[s]=merge;
+  });
+  rend();
+}
+
+// Permanent merge (actually combines data) — kept for backwards compat
+function mergeUS(stockName){toggleMergeView(stockName)}
+function unmergeUS(idx){
+  const h=D.holdings.US[idx];
+  if(h._merged?.length){
+    if(!confirm(`Unmerge back into ${h._merged.length} original transactions?`))return;
+    const originals=h._merged.map(o=>({...o,_merged:undefined}));
+    D.holdings.US.splice(idx,1,...originals);save();
+  }
+}
+
+// Single asset refresh
+async function fetchSingle(key){
+  try{
+    if(key==='BTC'){
+      const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=gbp');
+      const j=await r.json();if(j.bitcoin?.gbp){D.currentPrices.BTC=j.bitcoin.gbp}
+    }else if(key==='VUAG'){
+      const url='https://query1.finance.yahoo.com/v8/finance/chart/VUAG.L?interval=1d&range=1d';
+      const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(url));
+      const j=await r.json();let p=j?.chart?.result?.[0]?.meta?.regularMarketPrice;
+      if(p){if(p>500)p/=100;D.currentPrices.VUAG=p}
+    }else if(key==='GOLD'){
+      // Gold doesn't have a reliable free API for the unit price, keep manual
+    }
+    D.lastUpdated=new Date().toISOString();
+    localStorage.setItem('investmentTracker',JSON.stringify(D));rend();
+  }catch(e){console.warn('Single fetch failed for '+key,e)}
+}
+
+// Ticker detection and live price fetch for US stock add
+const KNOWN_TICKERS={'META Platforms':'META','META':'META',Apple:'AAPL',Google:'GOOGL',Alphabet:'GOOGL',Amazon:'AMZN',Microsoft:'MSFT',Tesla:'TSLA',Nvidia:'NVDA',Netflix:'NFLX',AMD:'AMD',Intel:'INTC',Palantir:'PLTR',Coinbase:'COIN',UnitedHealth:'UNH','Hewlett Packard':'HPE','Novo Nordisk':'NVO','Take-Two':'TTWO',Disney:'DIS',Nike:'NKE',Visa:'V',PayPal:'PYPL',Uber:'UBER',Spotify:'SPOT',Shopify:'SHOP',Snap:'SNAP',Pinterest:'PINS',Block:'SQ',Robinhood:'HOOD',Rivian:'RIVN',Lucid:'LCID',Snowflake:'SNOW',CrowdStrike:'CRWD',Datadog:'DDOG'};
+
+function onStockInput(){
+  const name=$('txS').value.trim();
+  // Try to match ticker
+  const match=Object.entries(KNOWN_TICKERS).find(([k])=>k.toLowerCase()===name.toLowerCase());
+  if(match){$('txTk').value=match[1]}
+  else if(name.length<=5&&name===name.toUpperCase()){$('txTk').value=name}
+  // Update datalist
+  const dl=$('stockList');
+  dl.innerHTML=Object.keys(KNOWN_TICKERS).filter(k=>k.toLowerCase().includes(name.toLowerCase())).slice(0,8).map(k=>`<option value="${k}">`).join('');
+}
+
+async function fetchStockPrice(){
+  const ticker=$('txTk').value.trim().toUpperCase();
+  if(!ticker){alert('Enter a ticker symbol');return}
+  $('txLiveP').textContent='Fetching...';$('txLiveP').style.color='var(--bl)';
+  try{
+    const url=`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`;
+    const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(url));
+    const j=await r.json();
+    const p=j?.chart?.result?.[0]?.meta?.regularMarketPrice;
+    if(p){
+      $('txLiveP').textContent='$'+p.toFixed(2)+' (£'+(p*liveUsdGbp()).toFixed(2)+')';
+      $('txLiveP').style.color='var(--gn)';
+      $('txP').value=p.toFixed(2);
+      // Save ticker mapping
+      const sn=$('txS').value.trim();
+      if(sn){
+        if(!D._tickers)D._tickers={};
+        D._tickers[sn]=ticker;
+        if(!D.usStockPrices[sn])D.usStockPrices[sn]=p;
+        else D.usStockPrices[sn]=p;
+        // Add to UST dynamically
+        UST[sn]=ticker;
+      }
+    }else{$('txLiveP').textContent='Not found';$('txLiveP').style.color='var(--rd)'}
+  }catch(e){$('txLiveP').textContent='Fetch failed';$('txLiveP').style.color='var(--rd)'}
+}
+
+/* ===================== GOOGLE DRIVE SYNC ===================== */
+// Instructions: Replace YOUR_CLIENT_ID below with your Google Cloud OAuth Client ID
+// Setup: console.cloud.google.com → New Project → Enable Drive API → Create OAuth Credentials → Web Application
+const GDRIVE_CLIENT_ID='YOUR_CLIENT_ID.apps.googleusercontent.com'; // ← REPLACE THIS
+const GDRIVE_SCOPES='https://www.googleapis.com/auth/drive.file';
+const GDRIVE_FILENAME='investment-tracker-data.json';
+let gToken=null,gFileId=null;
+
+function gDriveEnabled(){return GDRIVE_CLIENT_ID&&!GDRIVE_CLIENT_ID.startsWith('YOUR_')}
+
+function gSyncStatus(msg,type){
+  const el=$('gSyncSt');
+  if(!el)return;
+  const colors={ok:'var(--gn)',err:'var(--rd)',info:'var(--bl)',warn:'var(--am)'};
+  el.innerHTML=`<span style="font-size:10px;color:${colors[type]||'var(--t3)'}">${msg}</span>`;
+  if(type==='ok')setTimeout(()=>{el.innerHTML=''},4000);
+}
+
+function gUpdateButtons(){
+  const enabled=gDriveEnabled();
+  const signBtn=$('gSignBtn'),saveBtn=$('gSaveBtn'),loadBtn=$('gLoadBtn');
+  if(!enabled){
+    // Show setup hint only on overview
+    signBtn.style.display='none';saveBtn.style.display='none';loadBtn.style.display='none';
+    return;
+  }
+  if(gToken){
+    signBtn.style.display='none';
+    saveBtn.style.display='';
+    loadBtn.style.display='';
+  }else{
+    signBtn.style.display='';
+    saveBtn.style.display='none';
+    loadBtn.style.display='none';
+  }
+}
+
+async function gDriveAuth(){
+  if(!gDriveEnabled()){
+    alert('Google Drive not configured.\n\nTo set up:\n1. Go to console.cloud.google.com\n2. Create a new project\n3. Enable "Google Drive API"\n4. Create OAuth 2.0 Client ID (Web application)\n5. Add your site URL as authorized origin\n6. Copy the Client ID into the HTML file\n\nSee the setup guide in the tracker.');
+    return;
+  }
+  try{
+    // Use Google Identity Services (GIS) token model
+    const client=google.accounts.oauth2.initTokenClient({
+      client_id:GDRIVE_CLIENT_ID,
+      scope:GDRIVE_SCOPES,
+      callback:(resp)=>{
+        if(resp.error){gSyncStatus('Auth failed','err');return}
+        gToken=resp.access_token;
+        gSyncStatus('Signed in ✓','ok');
+        gUpdateButtons();
+        // Try to find existing file
+        gFindFile();
+      }
+    });
+    client.requestAccessToken();
+  }catch(e){gSyncStatus('Auth error: '+e.message,'err');console.error(e)}
+}
+
+async function gFindFile(){
+  if(!gToken)return;
+  try{
+    const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=name='${GDRIVE_FILENAME}'+and+trashed=false&spaces=drive&fields=files(id,name,modifiedTime)`,{
+      headers:{'Authorization':'Bearer '+gToken}
+    });
+    const j=await r.json();
+    if(j.files&&j.files.length>0){
+      gFileId=j.files[0].id;
+      gSyncStatus('Drive file found','info');
+    }else{
+      gFileId=null;
+      gSyncStatus('No existing file — will create on save','info');
+    }
+  }catch(e){gSyncStatus('Find failed','err')}
+}
+
+async function gDriveSave(){
+  if(!gToken){gDriveAuth();return}
+  gSyncStatus('Saving to Drive...','info');
+  try{
+    const data=JSON.stringify(D,null,2);
+    const metadata={name:GDRIVE_FILENAME,mimeType:'application/json'};
+
+    if(gFileId){
+      // Update existing file
+      const form=new FormData();
+      form.append('metadata',new Blob([JSON.stringify({mimeType:'application/json'})],{type:'application/json'}));
+      form.append('file',new Blob([data],{type:'application/json'}));
+      const r=await fetch(`https://www.googleapis.com/upload/drive/v3/files/${gFileId}?uploadType=multipart`,{
+        method:'PATCH',headers:{'Authorization':'Bearer '+gToken},body:form
+      });
+      if(r.ok){gSyncStatus('☁️ Saved to Drive ✓','ok')}
+      else{const e=await r.text();gSyncStatus('Save failed: '+r.status,'err');console.error(e)}
+    }else{
+      // Create new file
+      const form=new FormData();
+      form.append('metadata',new Blob([JSON.stringify(metadata)],{type:'application/json'}));
+      form.append('file',new Blob([data],{type:'application/json'}));
+      const r=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{
+        method:'POST',headers:{'Authorization':'Bearer '+gToken},body:form
+      });
+      if(r.ok){const j=await r.json();gFileId=j.id;gSyncStatus('☁️ Created & saved to Drive ✓','ok')}
+      else{gSyncStatus('Create failed','err')}
+    }
+  }catch(e){gSyncStatus('Save error','err');console.error(e)}
+}
+
+async function gDriveLoad(){
+  if(!gToken){gDriveAuth();return}
+  if(!gFileId){await gFindFile();if(!gFileId){gSyncStatus('No file in Drive to load','warn');return}}
+  gSyncStatus('Loading from Drive...','info');
+  try{
+    const r=await fetch(`https://www.googleapis.com/drive/v3/files/${gFileId}?alt=media`,{
+      headers:{'Authorization':'Bearer '+gToken}
+    });
+    if(r.ok){
+      const data=await r.json();
+      D=data;
+      localStorage.setItem('investmentTracker',JSON.stringify(D));
+      gSyncStatus('☁️ Loaded from Drive ✓','ok');
+      load();bn();rend();
+    }else{gSyncStatus('Load failed: '+r.status,'err')}
+  }catch(e){gSyncStatus('Load error','err');console.error(e)}
+}
+
+// Auto-save to Drive on every save (if signed in)
+const _origSave=save;
+save=function(){
+  _origSave();
+  if(gToken&&gDriveEnabled()){
+    // Debounce — save to Drive 2s after last local save
+    clearTimeout(save._driveTimer);
+    save._driveTimer=setTimeout(()=>gDriveSave(),2000);
+  }
+};
+
+/* ===================== INIT ===================== */
+load();bn();rend();
+
+// Load Google Identity Services library
+if(gDriveEnabled()){
+  const gScript=document.createElement('script');
+  gScript.src='https://accounts.google.com/gsi/client';
+  gScript.onload=()=>{gUpdateButtons()};
+  document.head.appendChild(gScript);
+}else{
+  // Show setup hint
+  setTimeout(()=>{
+    gUpdateButtons();
+    gSyncStatus('Drive not configured — <a href="#" onclick="alert(\'To set up Google Drive sync:\\n\\n1. Go to console.cloud.google.com\\n2. Create a project\\n3. Enable Google Drive API\\n4. Credentials → Create OAuth Client ID → Web app\\n5. Add your site URL as authorized JS origin\\n6. Copy Client ID into the HTML file (search for YOUR_CLIENT_ID)\\n\\nIt takes ~10 minutes and is completely free.\');return false" style="color:var(--bl);text-decoration:underline">setup guide</a>','info');
+  },1000);
+}
+
+/* ===================== PWA SERVICE WORKER (inline) ===================== */
+if('serviceWorker' in navigator){
+  // Create service worker blob
+  const swCode=`
+    const CACHE='invest-tracker-v1';
+    const ASSETS=['/'];
+    self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});
+    self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+    self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)))});
+  `;
+  const swBlob=new Blob([swCode],{type:'application/javascript'});
+  const swUrl=URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl).then(r=>{console.log('SW registered')}).catch(e=>{console.log('SW failed (normal for local file)',e)});
+}
+
+/* PWA Install prompt */
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  // Show install button in header
+  const btn=document.createElement('button');
+  btn.className='b';btn.innerHTML='📲 Install App';
+  btn.style.cssText='background:var(--gnd);border-color:var(--gn);color:var(--gn);font-weight:600';
+  btn.onclick=()=>{deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted')btn.remove();deferredPrompt=null})};
+  document.querySelector('.hdr-r').prepend(btn);
+});
+
+// Detect standalone mode
+if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone){
+  document.body.style.paddingTop='env(safe-area-inset-top)';
+}
+</script>
+
+
+</body></html>
